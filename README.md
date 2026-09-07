@@ -1,24 +1,103 @@
-# Template for BESSER-PEARL Organization Repositories
+# Low-Code, Agentic, and Hybrid Software Development Benchmark
 
-This Github template provides a collection of base files and configuration recommendations for kick-starting a new project in the BESSER-PEARL organization.
+This repository contains the benchmark artifacts used to compare three software development approaches:
 
-## ⚒️ Using this template for your project
+1. Pure low-code development
+2. Pure agentic development
+3. Hybrid agentic low-code development
 
-To use this template when creating a new repository in the BESSER-PEARL GitHub organization, you have to set the `Repository template` field to `BESSER-PEARL/template`.
+The benchmark evaluates how these approaches perform when developing applications from natural-language requirements of increasing complexity and difficulty.
 
-The new repository will use this one as a template, meaning that it will contain all the files. 
-Once the new repository is created, you can edit its files to adapt them to your needs.
+## Repository Structure
 
-## ☑️ Guidelines & Contributing
+The repository contains two case studies. Each case study is organized into six requirement categories:
 
-You will find a guided description of the steps you should follow in the [guidelines](guidelines.md) file.
+```text
+.
+├── README.md
+│
+├── hotel-booking/
+│   ├── crud/
+│   │   ├── nl-requirements/
+│   │   ├── validation-tests/
+│   │   └── low-code-model/
+│   │
+│   ├── constraints/
+│   │   ├── nl-requirements/
+│   │   ├── validation-tests/
+│   │   └── low-code-model/
+│   │
+│   ├── complex-behaviour/
+│   │   ├── nl-requirements/
+│   │   ├── validation-tests/
+│   │   └── low-code-model/
+│   │
+│   ├── edge-cases/
+│   │   ├── nl-requirements/
+│   │   ├── validation-tests/
+│   │   └── low-code-model/
+│   │
+│   ├── conflicting/
+│   │   ├── nl-requirements/
+│   │   ├── validation-tests/
+│   │   └── low-code-model/
+│   │
+│   └── non-functional/
+│       ├── nl-requirements/
+│       ├── validation-tests/
+│       └── low-code-model/
+│
+└── nuclear-medicine-lung-cancer/
+    ├── crud/
+    ├── constraints/
+    ├── complex-behaviour/
+    ├── edge-cases/
+    ├── conflicting/
+    └── non-functional/
+```
 
-## 📓 Publishing the documentation to ReadTheDocs
+Each requirement category contains three types of artifacts:
 
-This template also provides the base files to deploy the repository documentation using [ReadTheDocs](https://docs.readthedocs.io/en/stable/index.html). In the `docs` folder you can find and edit all the Sphinx documentation sources. You can check the documentation generated from this template at the [following link](https://besser-template.readthedocs.io/en/latest/). 
+- **`nl-requirements/`** — the natural-language requirements provided as input to the development approaches.
+- **`validation-tests/`** — the acceptance tests used to validate the resulting applications.
+- **`low-code-model/`** — the low-code model used as an additional input for the pure low-code development process.
 
-For more information on how to connect your repository, customize, and deploy the documentation with ReadTheDocs, you can follow [this tutorial](https://docs.readthedocs.io/en/stable/tutorial/index.html). If you do not plan to use ReadTheDocs, remove the `docs` folder and the `.readthedocs.yaml` file from your repository.
+## Application Categories
 
-## 📚 References
+The benchmark progressively introduces different types of requirements and challenges.
 
-This project is an extended and adapted version (to the [BESSER-PEARL organization](https://github.com/organizations/BESSER-PEARL/)) of the [GitHub Best Practices Template](https://github.com/jlcanovas/gh-best-practices-template.git)
+### 1. CRUD — Basic Requirements
+
+A simple CRUD application covering the core functionality of the case study.
+
+This category establishes the basic functionality required to implement the application, including the creation, retrieval, modification, and deletion of the main domain entities.
+
+### 2. Constraints — Validation and Business Rules
+
+The basic application is extended with additional validation constraints and domain-specific business rules.
+
+These requirements introduce conditions that must be satisfied by the application beyond basic CRUD functionality.
+
+### 3. Complex Behaviour — Dynamic Calculations
+
+Requirements involving more complex dynamic calculations are introduced.
+
+This category evaluates the ability of the development approaches to implement functionality whose behavior depends on application data, relationships, or runtime conditions.
+
+### 4. Edge Cases — Unconventional and Edge Cases
+
+Requirements include unusual and edge-case scenarios that may be counterintuitive for agentic models.
+
+This category focuses on less common situations and requirements that may challenge the ability of automated development approaches to correctly interpret and implement the specification.
+
+### 5. Conflicting — Defective Requirements
+
+The requirements contain inconsistencies, omissions, and conflicts, resulting in potential goal conflicts.
+
+This category evaluates how the different development approaches handle requirements that are not fully consistent or that may admit conflicting interpretations.
+
+### 6. Non-Functional Requirements
+
+Additional requirements address aspects such as style, colors, accessibility, and multilingual support.
+
+This category evaluates requirements that concern qualities and characteristics of the application beyond its core functional behavior.
