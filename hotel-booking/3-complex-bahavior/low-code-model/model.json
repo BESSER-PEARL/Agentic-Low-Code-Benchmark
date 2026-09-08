@@ -42,8 +42,8 @@
                 "type": "Class",
                 "owner": null,
                 "bounds": {
-                  "x": -1114,
-                  "y": 143,
+                  "x": -1027,
+                  "y": -11,
                   "width": 230,
                   "height": 40
                 },
@@ -213,7 +213,7 @@
               },
               "b6b65a9b-aab0-431e-bc27-76c509159349": {
                 "id": "b6b65a9b-aab0-431e-bc27-76c509159349",
-                "name": "+ generate_invoice():bool",
+                "name": "+ generate_invoice()",
                 "type": "ClassMethod",
                 "owner": "9d074b4e-e210-4363-a9c7-1a1e96d5b8e5",
                 "bounds": {
@@ -222,10 +222,10 @@
                   "width": 249,
                   "height": 30
                 },
-                "code": "",
+                "code": "def generate_invoice(self):\n    if self.invoice is not None:\n        return False\n\n\tself.invoice = Invoice(\n        issued_date=date.today(),\n        amount=self.calculate_price(),\n\t\tpaid=false\n    )\n\n    return True\n",
                 "visibility": "public",
                 "attributeType": "str",
-                "implementationType": "none",
+                "implementationType": "code",
                 "stateMachineId": "",
                 "quantumCircuitId": "",
                 "isOptional": false,
@@ -235,7 +235,7 @@
               },
               "29198765-2be9-46b7-820a-16d5a598ecf2": {
                 "id": "29198765-2be9-46b7-820a-16d5a598ecf2",
-                "name": "+ check_in():bool",
+                "name": "+ check_in()",
                 "type": "ClassMethod",
                 "owner": "9d074b4e-e210-4363-a9c7-1a1e96d5b8e5",
                 "bounds": {
@@ -244,10 +244,10 @@
                   "width": 249,
                   "height": 30
                 },
-                "code": "",
+                "code": "def check_in(self):\n    if self.booking_status != BookingStatus.CONFIRMED:\n        return False\n\n    if self.stay_status != StayStatus.NOT_ARRIVED:\n        return False\n\n    self.stay_status = StayStatus.CHECKED_IN\n    return True\n",
                 "visibility": "public",
                 "attributeType": "str",
-                "implementationType": "none",
+                "implementationType": "code",
                 "stateMachineId": "",
                 "quantumCircuitId": "",
                 "isOptional": false,
@@ -257,7 +257,7 @@
               },
               "f87f5db8-8dae-41e6-8490-ddd20f94d29b": {
                 "id": "f87f5db8-8dae-41e6-8490-ddd20f94d29b",
-                "name": "+ check_out():bool",
+                "name": "+ check_out()",
                 "type": "ClassMethod",
                 "owner": "9d074b4e-e210-4363-a9c7-1a1e96d5b8e5",
                 "bounds": {
@@ -266,10 +266,10 @@
                   "width": 249,
                   "height": 30
                 },
-                "code": "",
+                "code": "def check_out(self):\n    if self.stay_status != StayStatus.CHECKED_IN:\n        return False\n\n    self.stay_status = StayStatus.CHECKED_OUT\n    return True\n",
                 "visibility": "public",
                 "attributeType": "str",
-                "implementationType": "none",
+                "implementationType": "code",
                 "stateMachineId": "",
                 "quantumCircuitId": "",
                 "isOptional": false,
@@ -279,7 +279,7 @@
               },
               "88cf32d5-3d97-4ffe-bbbe-d2832dc3b4da": {
                 "id": "88cf32d5-3d97-4ffe-bbbe-d2832dc3b4da",
-                "name": "+ cancel():bool",
+                "name": "+ cancel()",
                 "type": "ClassMethod",
                 "owner": "9d074b4e-e210-4363-a9c7-1a1e96d5b8e5",
                 "bounds": {
@@ -288,10 +288,10 @@
                   "width": 249,
                   "height": 30
                 },
-                "code": "",
+                "code": "def cancel(self):\n    if self.booking_status == BookingStatus.CANCELED:\n        return False\n\n    if self.stay_status != StayStatus.NOT_ARRIVED:\n        return False\n\n    self.booking_status = BookingStatus.CANCELED\n    return True\n",
                 "visibility": "public",
                 "attributeType": "str",
-                "implementationType": "none",
+                "implementationType": "code",
                 "stateMachineId": "",
                 "quantumCircuitId": "",
                 "isOptional": false,
@@ -301,7 +301,7 @@
               },
               "9e29b3fa-8d76-4f81-a5a7-32d545eee4c6": {
                 "id": "9e29b3fa-8d76-4f81-a5a7-32d545eee4c6",
-                "name": "+ calculate_price():float",
+                "name": "+ calculate_price()",
                 "type": "ClassMethod",
                 "owner": "9d074b4e-e210-4363-a9c7-1a1e96d5b8e5",
                 "bounds": {
@@ -310,10 +310,10 @@
                   "width": 249,
                   "height": 30
                 },
-                "code": "",
+                "code": "def calculate_price(self):\n    self.price = sum(reserved_room.agreed_price for reserved_room in self.rooms)\n\treturn price",
                 "visibility": "public",
                 "attributeType": "str",
-                "implementationType": "none",
+                "implementationType": "code",
                 "stateMachineId": "",
                 "quantumCircuitId": "",
                 "isOptional": false,
@@ -865,7 +865,7 @@
               },
               "c820b671-848c-478c-9584-8a117e0d32df": {
                 "id": "c820b671-848c-478c-9584-8a117e0d32df",
-                "name": "+ pay_invoice():bool",
+                "name": "+ pay_invoice()",
                 "type": "ClassMethod",
                 "owner": "21e34399-f1e0-45f4-a2e4-299fa23f9d75",
                 "bounds": {
@@ -874,10 +874,10 @@
                   "width": 179,
                   "height": 30
                 },
-                "code": "",
+                "code": "def pay_invoice(self):\n\tif self.paid:\n\t\treturn False\n    \t\n\tself.paid = True\n    self.stayinig.booking_status = BookingStatus.confirmed\n\treturn True\n",
                 "visibility": "public",
                 "attributeType": "str",
-                "implementationType": "none",
+                "implementationType": "code",
                 "stateMachineId": "",
                 "quantumCircuitId": "",
                 "isOptional": false,
@@ -949,7 +949,7 @@
                   "height": 110
                 },
                 "description": "",
-                "constraint": "context Booking\ninv NumberOfGuestsDoesNotExceedRoomCapacity:\n    self.guests->size() <= self.rooms->collect(r | r.max_people)->sum()"
+                "constraint": "context Booking\ninv NumberOfGuestsDoesNotExceedRoomCapacity:\n    self.guests->size() <= self.rooms->collect(r | r.max_people)->sum()\n\n\ncontext Booking\ninv NoRoomDoubleBooking:\n    self.rooms.booking->select(b |\n        b.id <> self.id and\n        self.booking_status <> canceled and\n        b.booking_status <> canceled and\n        self.check_in < b.check_out and\n        b.check_in < self.check_out\n    )->isEmpty()\n"
               }
             },
             "relationships": {
@@ -1006,26 +1006,18 @@
                 "type": "ClassInheritance",
                 "owner": null,
                 "bounds": {
-                  "x": -1004,
+                  "x": -864.5,
                   "y": -239,
-                  "width": 139.5,
-                  "height": 382
+                  "width": 10,
+                  "height": 228
                 },
                 "path": [
                   {
                     "x": 5,
-                    "y": 382
+                    "y": 228
                   },
                   {
                     "x": 5,
-                    "y": 191
-                  },
-                  {
-                    "x": 134.5,
-                    "y": 191
-                  },
-                  {
-                    "x": 134.5,
                     "y": 0
                   }
                 ],
@@ -1087,7 +1079,7 @@
                   "x": -159.29999923706055,
                   "y": -36,
                   "width": 86.5,
-                  "height": 92.75
+                  "height": 92.66666603088379
                 },
                 "path": [
                   {
@@ -1122,7 +1114,7 @@
                   "x": -644,
                   "y": -128,
                   "width": 354,
-                  "height": 49.75
+                  "height": 49.66666603088379
                 },
                 "path": [
                   {
@@ -1154,23 +1146,23 @@
                 "type": "ClassBidirectional",
                 "owner": null,
                 "bounds": {
-                  "x": -884,
+                  "x": -797,
                   "y": -36,
-                  "width": 685.533332824707,
-                  "height": 248.75
+                  "width": 598.533332824707,
+                  "height": 94.66666603088379
                 },
                 "path": [
                   {
-                    "x": 656.5,
+                    "x": 569.5,
                     "y": 0
                   },
                   {
-                    "x": 656.5,
-                    "y": 209
+                    "x": 569.5,
+                    "y": 55
                   },
                   {
                     "x": 0,
-                    "y": 209
+                    "y": 55
                   }
                 ],
                 "source": {
@@ -1196,7 +1188,7 @@
                   "x": -712,
                   "y": -332.5,
                   "width": 422,
-                  "height": 49.75
+                  "height": 49.66666603088379
                 },
                 "path": [
                   {
@@ -1231,7 +1223,7 @@
                   "x": -40,
                   "y": -266,
                   "width": 312,
-                  "height": 49.75
+                  "height": 49.66666603088379
                 },
                 "path": [
                   {
@@ -1369,7 +1361,7 @@
             },
             "assessments": {}
           },
-          "lastUpdate": "2026-09-08T09:27:33.125Z"
+          "lastUpdate": "2026-09-08T13:33:42.792Z"
         }
       ]
     },
@@ -1390,6 +1382,6 @@
       }
     }
   },
-  "exportedAt": "2026-09-08T09:27:42.938Z",
+  "exportedAt": "2026-09-08T13:45:33.831Z",
   "version": "2.0.0"
 }
