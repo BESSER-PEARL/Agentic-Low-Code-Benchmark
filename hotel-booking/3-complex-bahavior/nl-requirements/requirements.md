@@ -2,7 +2,7 @@
 
 ## A hotel booking and stay management system
 ### People involved
-The system keeps one uniform record for every person it deals with. For each of them it stores a unique identifying number, a first name, a family name, a phone number and an email address. Two specialised kinds of individuals exist, and both reuse exactly the same personal details: employees who work for the hotel, and guests who occupy the rooms.
+The system keeps one uniform record for every person it deals with. For each of them it stores a unique identifying number, a first name, a family name, a phone number and an email address. Two specialised kinds of persons exist, and both reuse exactly the same personal details: employees who work for the hotel, and guests who occupy the rooms.
 Two rules govern contact details. An email address must have the usual shape of a mailbox name, an at sign, a domain name and a final domain suffix of at least two letters. A phone number must consist of an optional leading plus sign followed by between seven and fifteen digits, with nothing else in it.
 ### Rooms
 Every room is identified by its room number. Along with that, the hotel records how many people the room can hold at most, a free-text description of the room, and its standard nightly price.
