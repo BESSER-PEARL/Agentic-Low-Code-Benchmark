@@ -3,8 +3,10 @@ Feature: Invoice payment
   I want to pay an invoice
   So that the corresponding booking is confirmed
 
-  # Traceability: Invoice.pay_invoice(): bool, and its effect on Invoice.paid
-  # and on Booking.booking_status
+  # Source: nl-requirements/requirements.md, "Billing" — "A bill offers a single
+  # action: registering its payment, which reports back whether the payment went
+  # through. Settling the bill is what moves the corresponding booking from
+  # awaiting payment to confirmed."
 
   Background:
     Given the hotel booking application is running and the database is empty
@@ -14,14 +16,14 @@ Feature: Invoice payment
     And a booking exists for guest "jane.doe@example.com" in room 101 with agreed price 100.0 and no additional charges, from 2026-10-01 to 2026-10-04
     And an invoice has been generated for that booking
 
-  @complex-behavior @correctness @conformance @invoice
+  @complex-behavior @correctness @completeness @invoice
   Scenario: Paying an unpaid invoice in full succeeds
     When I pay that invoice
     Then the operation should succeed
     And the invoice should be marked as paid
     And the booking's status should be "confirmed"
 
-  @complex-behavior @correctness @conformance @invoice
+  @complex-behavior @correctness @completeness @invoice
   Scenario: Paying an invoice that has already been paid is rejected
     Given that invoice has already been paid
     When I try to pay that invoice again

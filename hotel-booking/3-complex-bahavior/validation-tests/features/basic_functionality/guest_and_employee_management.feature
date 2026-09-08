@@ -3,13 +3,15 @@ Feature: Guest and employee management
   I want to create, view, update and delete guest and employee records
   So that the hotel keeps accurate records of the people it deals with
 
-  # Traceability: classes Person, Guest, Employee
-  # (attributes: id, name, last_name, phone_number, email)
+  # Source: nl-requirements/requirements.md, "People involved" — "The system keeps one
+  # uniform record for every person it deals with. For each of them it stores a unique
+  # identifying number, a first name, a family name, a phone number and an email
+  # address. Two specialised kinds of persons exist ... employees ... and guests..."
 
   Background:
     Given the hotel booking application is running and the database is empty
 
-  @requirements-coverage @correctness @conformance @guest @crud
+  @correctness @completeness @guest @crud
   Scenario: Create a new guest with valid data
     When I create a guest with the following details:
       | name | last_name | phone_number | email                 |
@@ -20,7 +22,7 @@ Feature: Guest and employee management
     And that guest's last name should be "Doe"
     And that guest's phone number should be "+15551234567"
 
-  @requirements-coverage @correctness @guest @crud
+  @correctness @completeness @guest @crud
   Scenario: Retrieve an existing guest's details
     Given a guest exists with the following details:
       | name | last_name | phone_number | email                 |
@@ -28,7 +30,7 @@ Feature: Guest and employee management
     When I request the guest with email "jane.doe@example.com"
     Then I should see a guest with name "Jane", last name "Doe", phone number "+15551234567" and email "jane.doe@example.com"
 
-  @requirements-coverage @correctness @guest @crud
+  @correctness @completeness @guest @crud
   Scenario: List all registered guests
     Given the following guests exist:
       | name | last_name | email                   |
@@ -39,14 +41,14 @@ Feature: Guest and employee management
     And the list should include a guest with email "jane.doe@example.com"
     And the list should include a guest with email "john.smith@example.com"
 
-  @requirements-coverage @correctness @guest @crud
+  @correctness @completeness @guest @crud
   Scenario: Update a guest's contact information
     Given a guest exists with email "jane.doe@example.com" and phone number "+15551234567"
     When I update that guest's phone number to "+15559876543"
     Then the operation should succeed
     And that guest's phone number should be "+15559876543"
 
-  @requirements-coverage @correctness @guest @crud
+  @correctness @completeness @guest @crud
   Scenario: Delete a guest with no associated bookings
     Given a guest exists with email "jane.doe@example.com"
     And that guest has no bookings
@@ -56,7 +58,7 @@ Feature: Guest and employee management
 
   # --- Employee ---
 
-  @requirements-coverage @correctness @conformance @employee @crud
+  @correctness @completeness @employee @crud
   Scenario: Create a new employee with valid data
     When I create an employee with the following details:
       | name  | last_name | phone_number | email                 |
@@ -64,7 +66,7 @@ Feature: Guest and employee management
     Then the operation should succeed
     And an employee with email "mario.rossi@hotel.com" should exist
 
-  @requirements-coverage @correctness @employee @crud
+  @correctness @completeness @employee @crud
   Scenario: Retrieve an existing employee's details
     Given an employee exists with the following details:
       | name  | last_name | phone_number | email                 |
@@ -72,13 +74,13 @@ Feature: Guest and employee management
     When I request the employee with email "mario.rossi@hotel.com"
     Then I should see an employee with name "Mario", last name "Rossi" and email "mario.rossi@hotel.com"
 
-  @requirements-coverage @correctness @employee @crud
+  @correctness @completeness @employee @crud
   Scenario: Update an employee's information
     Given an employee exists with email "mario.rossi@hotel.com"
     When I update that employee's last name to "Bianchi"
     Then that employee's last name should be "Bianchi"
 
-  @requirements-coverage @correctness @employee @crud
+  @correctness @completeness @employee @crud
   Scenario: Delete an employee who manages no bookings
     Given an employee exists with email "mario.rossi@hotel.com"
     And that employee manages no bookings
