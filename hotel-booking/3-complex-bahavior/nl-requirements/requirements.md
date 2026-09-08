@@ -12,7 +12,7 @@ Each booking has one person acting as its contact, the individual who makes and 
 Separately from the contact, each booking lists the guests who will actually stay. At least one guest must be listed, and there may be more. A given guest may appear on several bookings, or on none.
 Each booking is also handled by exactly one employee, who is responsible for it. An employee may be responsible for many bookings at the same time, or for none.
 A booking covers at least one room and may cover several. Each room is tied to zero or multiple booking records. For every room included in a booking, the system stores the price actually agreed for that room in that booking, which may differ from the room's standard price.
-The total number of guests listed on a booking may never be greater than the combined capacity of all the rooms it covers, obtained by adding up the maximum occupancy of each of those rooms.
+The total number of guests listed on a booking may never be greater than the combined capacity of all the rooms it covers, obtained by adding up the maximum occupancy of each of those rooms. A room cannot be booked by more than one active booking for the same dates.
 ### How a booking's state is tracked
 Two states are followed for every booking, and neither is set by hand. Both are worked out automatically from what has happened so far.
 The first describes where the booking stands commercially. It can only be one of three things: awaiting payment, confirmed, or cancelled. A booking begins awaiting payment, becomes confirmed once the money has been settled, and becomes cancelled if it is called off.
