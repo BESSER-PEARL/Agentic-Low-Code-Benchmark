@@ -1,12 +1,12 @@
 {
   "project": {
-    "id": "project_1788818477660_mqv9xwtoz",
+    "id": "project_1788859642746_mt6oa85wv",
     "type": "Project",
     "schemaVersion": 4,
     "name": "New_Project",
     "description": "New project with all diagram types",
     "owner": "User",
-    "createdAt": "2026-09-07T22:01:17.660Z",
+    "createdAt": "2026-09-08T09:27:22.746Z",
     "currentDiagramType": "ClassDiagram",
     "currentDiagramIndices": {
       "ClassDiagram": 0,
@@ -894,11 +894,10 @@
                   "x": 5,
                   "y": -127,
                   "width": 220,
-                  "height": 100
+                  "height": 70
                 },
                 "attributes": [
-                  "5fd69664-d6ca-4b29-9334-09c42b68c381",
-                  "5e36964b-2603-4f4b-bea5-246d18f46484"
+                  "5fd69664-d6ca-4b29-9334-09c42b68c381"
                 ],
                 "methods": []
               },
@@ -910,28 +909,6 @@
                 "bounds": {
                   "x": 5.5,
                   "y": -86.5,
-                  "width": 219,
-                  "height": 30
-                },
-                "code": "",
-                "visibility": "public",
-                "attributeType": "float",
-                "implementationType": "none",
-                "stateMachineId": "",
-                "quantumCircuitId": "",
-                "isOptional": false,
-                "isDerived": false,
-                "isId": false,
-                "isExternalId": false
-              },
-              "5e36964b-2603-4f4b-bea5-246d18f46484": {
-                "id": "5e36964b-2603-4f4b-bea5-246d18f46484",
-                "name": "additional_charges",
-                "type": "ClassAttribute",
-                "owner": "04a2ca9d-c38a-4a8c-a663-c5f58d6688ba",
-                "bounds": {
-                  "x": 5.5,
-                  "y": -56.5,
                   "width": 219,
                   "height": 30
                 },
@@ -1107,18 +1084,18 @@
                 "type": "ClassBidirectional",
                 "owner": null,
                 "bounds": {
-                  "x": -159.40625,
+                  "x": -159.29999923706055,
                   "y": -36,
-                  "width": 86.59375,
-                  "height": 91
+                  "width": 86.5,
+                  "height": 92.75
                 },
                 "path": [
                   {
-                    "x": 54.90625,
+                    "x": 54.79999923706055,
                     "y": 0
                   },
                   {
-                    "x": 54.90625,
+                    "x": 54.79999923706055,
                     "y": 82
                   }
                 ],
@@ -1145,7 +1122,7 @@
                   "x": -644,
                   "y": -128,
                   "width": 354,
-                  "height": 48
+                  "height": 49.75
                 },
                 "path": [
                   {
@@ -1179,8 +1156,8 @@
                 "bounds": {
                   "x": -884,
                   "y": -36,
-                  "width": 686.2890625,
-                  "height": 247
+                  "width": 685.533332824707,
+                  "height": 248.75
                 },
                 "path": [
                   {
@@ -1219,7 +1196,7 @@
                   "x": -712,
                   "y": -332.5,
                   "width": 422,
-                  "height": 48
+                  "height": 49.75
                 },
                 "path": [
                   {
@@ -1254,7 +1231,7 @@
                   "x": -40,
                   "y": -266,
                   "width": 312,
-                  "height": 48
+                  "height": 49.75
                 },
                 "path": [
                   {
@@ -1275,7 +1252,7 @@
                 "target": {
                   "direction": "Right",
                   "element": "9d074b4e-e210-4363-a9c7-1a1e96d5b8e5",
-                  "multiplicity": "1",
+                  "multiplicity": "0..*",
                   "role": "booking"
                 },
                 "isManuallyLayouted": false
@@ -1392,7 +1369,7 @@
             },
             "assessments": {}
           },
-          "lastUpdate": "2026-09-07T22:43:19.067Z"
+          "lastUpdate": "2026-09-08T09:27:33.125Z"
         }
       ]
     },
@@ -1413,6 +1390,6 @@
       }
     }
   },
-  "exportedAt": "2026-09-07T22:43:37.611Z",
+  "exportedAt": "2026-09-08T09:27:42.938Z",
   "version": "2.0.0"
 }
