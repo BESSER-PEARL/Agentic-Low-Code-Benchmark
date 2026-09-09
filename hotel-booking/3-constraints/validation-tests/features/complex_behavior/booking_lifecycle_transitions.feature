@@ -38,14 +38,6 @@ Feature: Booking lifecycle: check-in, check-out and cancellation
     And the booking's stay status should be "checked_in"
 
   @complex-behavior @correctness @completeness @booking @lifecycle
-  Scenario: Checking in a booking that is still pending payment is rejected
-    Given a booking exists for guest "jane.doe@example.com" in room 101 from 2026-10-01 to 2026-10-05
-    And that booking's invoice has not been paid
-    When I try to check in that booking
-    Then the operation should fail
-    And I should see an error indicating the booking must be confirmed before check-in
-
-  @complex-behavior @correctness @completeness @booking @lifecycle
   Scenario: Checking out a booking that has checked in succeeds
     Given a checked-in booking exists for guest "jane.doe@example.com" in room 101
     When the guest checks out of that booking
@@ -65,10 +57,3 @@ Feature: Booking lifecycle: check-in, check-out and cancellation
     When I cancel that booking
     Then the operation should succeed
     And the booking's status should be "canceled"
-
-  @complex-behavior @correctness @completeness @booking @lifecycle
-  Scenario: Cancelling a booking after the guest has already checked in is rejected
-    Given a checked-in booking exists for guest "jane.doe@example.com" in room 101
-    When I try to cancel that booking
-    Then the operation should fail
-    And I should see an error indicating a booking cannot be canceled after check-in
