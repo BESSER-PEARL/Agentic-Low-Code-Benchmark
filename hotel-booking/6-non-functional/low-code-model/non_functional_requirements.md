@@ -1,0 +1,5 @@
+* Accessibility
+* Language
+* Appealing interface
+
+This case reuses the class diagram from the third case, which combines both behavior and constraints.
