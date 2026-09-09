@@ -1,0 +1,950 @@
+{
+  "project": {
+    "id": "project_1788935139960_6twv09jeh",
+    "type": "Project",
+    "schemaVersion": 4,
+    "name": "New_Project",
+    "description": "New project with all diagram types",
+    "owner": "User",
+    "createdAt": "2026-09-09T06:25:39.961Z",
+    "currentDiagramType": "ClassDiagram",
+    "currentDiagramIndices": {
+      "ClassDiagram": 0,
+      "ObjectDiagram": 0,
+      "StateMachineDiagram": 0,
+      "AgentDiagram": 0,
+      "NNDiagram": 0,
+      "UserDiagram": 0,
+      "GUINoCodeDiagram": 0,
+      "QuantumCircuitDiagram": 0,
+      "BPMN": 0
+    },
+    "diagrams": {
+      "ClassDiagram": [
+        {
+          "id": "513ad489-ac1a-40ab-b2f5-f50ba91073d4",
+          "title": "Hotel",
+          "model": {
+            "version": "3.0.0",
+            "type": "ClassDiagram",
+            "size": {
+              "width": 2094,
+              "height": 1282
+            },
+            "interactive": {
+              "elements": {},
+              "relationships": {}
+            },
+            "elements": {
+              "8f674936-5ef4-4886-9a09-acd66286a9f4": {
+                "id": "8f674936-5ef4-4886-9a09-acd66286a9f4",
+                "name": "Guest",
+                "type": "Class",
+                "owner": null,
+                "bounds": {
+                  "x": -1027,
+                  "y": -11,
+                  "width": 230,
+                  "height": 40
+                },
+                "attributes": [],
+                "methods": []
+              },
+              "9d074b4e-e210-4363-a9c7-1a1e96d5b8e5": {
+                "id": "9d074b4e-e210-4363-a9c7-1a1e96d5b8e5",
+                "name": "Booking",
+                "type": "Class",
+                "owner": null,
+                "bounds": {
+                  "x": -383,
+                  "y": -403,
+                  "width": 410,
+                  "height": 220
+                },
+                "attributes": [
+                  "fdc4b51f-c660-4b2d-ad61-29a642dfd942",
+                  "ab702d32-8b6a-453d-9dff-101efeb493d1",
+                  "543f5afc-dc12-410f-b528-3f046d4ce238",
+                  "a32d96b9-4d7b-4630-84a2-3fe5d6a20b43",
+                  "29f413df-a332-43ee-89f9-b8111840fba5",
+                  "ba93da06-87e6-41fa-9763-ff6faa597ac8"
+                ],
+                "methods": []
+              },
+              "fdc4b51f-c660-4b2d-ad61-29a642dfd942": {
+                "id": "fdc4b51f-c660-4b2d-ad61-29a642dfd942",
+                "name": "id",
+                "type": "ClassAttribute",
+                "owner": "9d074b4e-e210-4363-a9c7-1a1e96d5b8e5",
+                "bounds": {
+                  "x": -382.5,
+                  "y": -362.5,
+                  "width": 409,
+                  "height": 30
+                },
+                "code": "",
+                "visibility": "public",
+                "attributeType": "int",
+                "implementationType": "none",
+                "stateMachineId": "",
+                "quantumCircuitId": "",
+                "isOptional": false,
+                "isDerived": false,
+                "isId": true,
+                "isExternalId": false
+              },
+              "ab702d32-8b6a-453d-9dff-101efeb493d1": {
+                "id": "ab702d32-8b6a-453d-9dff-101efeb493d1",
+                "name": "check_in",
+                "type": "ClassAttribute",
+                "owner": "9d074b4e-e210-4363-a9c7-1a1e96d5b8e5",
+                "bounds": {
+                  "x": -382.5,
+                  "y": -332.5,
+                  "width": 409,
+                  "height": 30
+                },
+                "code": "",
+                "visibility": "public",
+                "attributeType": "date",
+                "implementationType": "none",
+                "stateMachineId": "",
+                "quantumCircuitId": "",
+                "isOptional": false,
+                "isDerived": false,
+                "isId": false,
+                "isExternalId": false
+              },
+              "543f5afc-dc12-410f-b528-3f046d4ce238": {
+                "id": "543f5afc-dc12-410f-b528-3f046d4ce238",
+                "name": "check_out",
+                "type": "ClassAttribute",
+                "owner": "9d074b4e-e210-4363-a9c7-1a1e96d5b8e5",
+                "bounds": {
+                  "x": -382.5,
+                  "y": -302.5,
+                  "width": 409,
+                  "height": 30
+                },
+                "code": "",
+                "visibility": "public",
+                "attributeType": "date",
+                "implementationType": "none",
+                "stateMachineId": "",
+                "quantumCircuitId": "",
+                "isOptional": false,
+                "isDerived": false,
+                "isId": false,
+                "isExternalId": false
+              },
+              "a32d96b9-4d7b-4630-84a2-3fe5d6a20b43": {
+                "id": "a32d96b9-4d7b-4630-84a2-3fe5d6a20b43",
+                "name": "booking_status",
+                "type": "ClassAttribute",
+                "owner": "9d074b4e-e210-4363-a9c7-1a1e96d5b8e5",
+                "bounds": {
+                  "x": -382.5,
+                  "y": -272.5,
+                  "width": 409,
+                  "height": 30
+                },
+                "code": "",
+                "visibility": "public",
+                "attributeType": "BookingStatus",
+                "implementationType": "none",
+                "stateMachineId": "",
+                "quantumCircuitId": "",
+                "isOptional": false,
+                "isDerived": false,
+                "isId": false,
+                "isExternalId": false,
+                "defaultValue": "pending_payment"
+              },
+              "29f413df-a332-43ee-89f9-b8111840fba5": {
+                "id": "29f413df-a332-43ee-89f9-b8111840fba5",
+                "name": "stay_status",
+                "type": "ClassAttribute",
+                "owner": "9d074b4e-e210-4363-a9c7-1a1e96d5b8e5",
+                "bounds": {
+                  "x": -382.5,
+                  "y": -242.5,
+                  "width": 409,
+                  "height": 30
+                },
+                "code": "",
+                "visibility": "public",
+                "attributeType": "StayStatus",
+                "implementationType": "none",
+                "stateMachineId": "",
+                "quantumCircuitId": "",
+                "isOptional": false,
+                "isDerived": false,
+                "isId": false,
+                "isExternalId": false,
+                "defaultValue": "not_arrived"
+              },
+              "ba93da06-87e6-41fa-9763-ff6faa597ac8": {
+                "id": "ba93da06-87e6-41fa-9763-ff6faa597ac8",
+                "name": "price",
+                "type": "ClassAttribute",
+                "owner": "9d074b4e-e210-4363-a9c7-1a1e96d5b8e5",
+                "bounds": {
+                  "x": -382.5,
+                  "y": -212.5,
+                  "width": 409,
+                  "height": 30
+                },
+                "code": "",
+                "visibility": "public",
+                "attributeType": "float",
+                "implementationType": "none",
+                "stateMachineId": "",
+                "quantumCircuitId": "",
+                "isOptional": false,
+                "isDerived": false,
+                "isId": false,
+                "isExternalId": false
+              },
+              "ada438a7-870a-42c7-a74f-5b6c709d26d1": {
+                "id": "ada438a7-870a-42c7-a74f-5b6c709d26d1",
+                "name": "Room",
+                "type": "Class",
+                "owner": null,
+                "bounds": {
+                  "x": 272,
+                  "y": -336,
+                  "width": 200,
+                  "height": 160
+                },
+                "attributes": [
+                  "9b8507b6-ddfa-4b1e-b219-3f18092202da",
+                  "8339d8e2-6426-4828-a479-a341f04f5c19",
+                  "86b6056e-7366-402b-a632-711686fd73b0",
+                  "1cf75469-2210-452a-8f19-6724e4fb5b63"
+                ],
+                "methods": []
+              },
+              "9b8507b6-ddfa-4b1e-b219-3f18092202da": {
+                "id": "9b8507b6-ddfa-4b1e-b219-3f18092202da",
+                "name": "number",
+                "type": "ClassAttribute",
+                "owner": "ada438a7-870a-42c7-a74f-5b6c709d26d1",
+                "bounds": {
+                  "x": 272.5,
+                  "y": -295.5,
+                  "width": 199,
+                  "height": 30
+                },
+                "code": "",
+                "visibility": "public",
+                "attributeType": "int",
+                "implementationType": "none",
+                "stateMachineId": "",
+                "quantumCircuitId": "",
+                "isOptional": false,
+                "isDerived": false,
+                "isId": true,
+                "isExternalId": false
+              },
+              "8339d8e2-6426-4828-a479-a341f04f5c19": {
+                "id": "8339d8e2-6426-4828-a479-a341f04f5c19",
+                "name": "max_people",
+                "type": "ClassAttribute",
+                "owner": "ada438a7-870a-42c7-a74f-5b6c709d26d1",
+                "bounds": {
+                  "x": 272.5,
+                  "y": -265.5,
+                  "width": 199,
+                  "height": 30
+                },
+                "code": "",
+                "visibility": "public",
+                "attributeType": "int",
+                "implementationType": "none",
+                "stateMachineId": "",
+                "quantumCircuitId": "",
+                "isOptional": false,
+                "isDerived": false,
+                "isId": false,
+                "isExternalId": false
+              },
+              "86b6056e-7366-402b-a632-711686fd73b0": {
+                "id": "86b6056e-7366-402b-a632-711686fd73b0",
+                "name": "description",
+                "type": "ClassAttribute",
+                "owner": "ada438a7-870a-42c7-a74f-5b6c709d26d1",
+                "bounds": {
+                  "x": 272.5,
+                  "y": -235.5,
+                  "width": 199,
+                  "height": 30
+                },
+                "code": "",
+                "visibility": "public",
+                "attributeType": "str",
+                "implementationType": "none",
+                "stateMachineId": "",
+                "quantumCircuitId": "",
+                "isOptional": false,
+                "isDerived": false,
+                "isId": false,
+                "isExternalId": false
+              },
+              "1cf75469-2210-452a-8f19-6724e4fb5b63": {
+                "id": "1cf75469-2210-452a-8f19-6724e4fb5b63",
+                "name": "price",
+                "type": "ClassAttribute",
+                "owner": "ada438a7-870a-42c7-a74f-5b6c709d26d1",
+                "bounds": {
+                  "x": 272.5,
+                  "y": -205.5,
+                  "width": 199,
+                  "height": 30
+                },
+                "code": "",
+                "visibility": "public",
+                "attributeType": "float",
+                "implementationType": "none",
+                "stateMachineId": "",
+                "quantumCircuitId": "",
+                "isOptional": false,
+                "isDerived": false,
+                "isId": false,
+                "isExternalId": false
+              },
+              "25fb35f9-2879-4e5f-83d4-e5d35b916f50": {
+                "id": "25fb35f9-2879-4e5f-83d4-e5d35b916f50",
+                "name": "Person",
+                "type": "Class",
+                "owner": null,
+                "bounds": {
+                  "x": -922,
+                  "y": -429,
+                  "width": 210,
+                  "height": 190
+                },
+                "attributes": [
+                  "2e43d9cd-58c2-42b6-a484-242e572e3170",
+                  "a9db3cb5-257e-41a7-b940-90fc44f9c93e",
+                  "65205dd0-78e3-4af7-9993-a69067a8ac88",
+                  "291e8842-a6a8-4f04-8165-5af1579de7ab",
+                  "1b31fd63-2035-4c50-9060-656ff9b1b1df"
+                ],
+                "methods": []
+              },
+              "2e43d9cd-58c2-42b6-a484-242e572e3170": {
+                "id": "2e43d9cd-58c2-42b6-a484-242e572e3170",
+                "name": "id",
+                "type": "ClassAttribute",
+                "owner": "25fb35f9-2879-4e5f-83d4-e5d35b916f50",
+                "bounds": {
+                  "x": -921.5,
+                  "y": -388.5,
+                  "width": 209,
+                  "height": 30
+                },
+                "code": "",
+                "visibility": "public",
+                "attributeType": "int",
+                "implementationType": "none",
+                "stateMachineId": "",
+                "quantumCircuitId": "",
+                "isOptional": false,
+                "isDerived": false,
+                "isId": true,
+                "isExternalId": false
+              },
+              "a9db3cb5-257e-41a7-b940-90fc44f9c93e": {
+                "id": "a9db3cb5-257e-41a7-b940-90fc44f9c93e",
+                "name": "name",
+                "type": "ClassAttribute",
+                "owner": "25fb35f9-2879-4e5f-83d4-e5d35b916f50",
+                "bounds": {
+                  "x": -921.5,
+                  "y": -358.5,
+                  "width": 209,
+                  "height": 30
+                },
+                "code": "",
+                "visibility": "public",
+                "attributeType": "str",
+                "implementationType": "none",
+                "stateMachineId": "",
+                "quantumCircuitId": "",
+                "isOptional": false,
+                "isDerived": false,
+                "isId": false,
+                "isExternalId": false
+              },
+              "65205dd0-78e3-4af7-9993-a69067a8ac88": {
+                "id": "65205dd0-78e3-4af7-9993-a69067a8ac88",
+                "name": "last_name",
+                "type": "ClassAttribute",
+                "owner": "25fb35f9-2879-4e5f-83d4-e5d35b916f50",
+                "bounds": {
+                  "x": -921.5,
+                  "y": -328.5,
+                  "width": 209,
+                  "height": 30
+                },
+                "code": "",
+                "visibility": "public",
+                "attributeType": "str",
+                "implementationType": "none",
+                "stateMachineId": "",
+                "quantumCircuitId": "",
+                "isOptional": false,
+                "isDerived": false,
+                "isId": false,
+                "isExternalId": false
+              },
+              "291e8842-a6a8-4f04-8165-5af1579de7ab": {
+                "id": "291e8842-a6a8-4f04-8165-5af1579de7ab",
+                "name": "phone_number",
+                "type": "ClassAttribute",
+                "owner": "25fb35f9-2879-4e5f-83d4-e5d35b916f50",
+                "bounds": {
+                  "x": -921.5,
+                  "y": -298.5,
+                  "width": 209,
+                  "height": 30
+                },
+                "code": "",
+                "visibility": "public",
+                "attributeType": "str",
+                "implementationType": "none",
+                "stateMachineId": "",
+                "quantumCircuitId": "",
+                "isOptional": false,
+                "isDerived": false,
+                "isId": false,
+                "isExternalId": false
+              },
+              "1b31fd63-2035-4c50-9060-656ff9b1b1df": {
+                "id": "1b31fd63-2035-4c50-9060-656ff9b1b1df",
+                "name": "email",
+                "type": "ClassAttribute",
+                "owner": "25fb35f9-2879-4e5f-83d4-e5d35b916f50",
+                "bounds": {
+                  "x": -921.5,
+                  "y": -268.5,
+                  "width": 209,
+                  "height": 30
+                },
+                "code": "",
+                "visibility": "public",
+                "attributeType": "str",
+                "implementationType": "none",
+                "stateMachineId": "",
+                "quantumCircuitId": "",
+                "isOptional": false,
+                "isDerived": false,
+                "isId": false,
+                "isExternalId": false
+              },
+              "405d1931-b9df-4762-98a9-b5a3f35919e9": {
+                "id": "405d1931-b9df-4762-98a9-b5a3f35919e9",
+                "name": "Employee",
+                "type": "Class",
+                "owner": null,
+                "bounds": {
+                  "x": -804,
+                  "y": -138,
+                  "width": 160,
+                  "height": 40
+                },
+                "attributes": [],
+                "methods": []
+              },
+              "b6cc9a94-e775-432b-93b4-2ed3e808b22a": {
+                "id": "b6cc9a94-e775-432b-93b4-2ed3e808b22a",
+                "name": "BookingStatus",
+                "type": "Enumeration",
+                "owner": null,
+                "bounds": {
+                  "x": -321,
+                  "y": -621,
+                  "width": 160,
+                  "height": 140
+                },
+                "attributes": [
+                  "359ef988-ac16-430f-8534-06930e76b731",
+                  "52144c9a-aa51-460e-b663-0462b8af613d",
+                  "313958d4-b9dd-4855-b620-391f52187a78"
+                ],
+                "methods": []
+              },
+              "359ef988-ac16-430f-8534-06930e76b731": {
+                "id": "359ef988-ac16-430f-8534-06930e76b731",
+                "name": "pending_payment",
+                "type": "ClassAttribute",
+                "owner": "b6cc9a94-e775-432b-93b4-2ed3e808b22a",
+                "bounds": {
+                  "x": -320.5,
+                  "y": -570.5,
+                  "width": 159,
+                  "height": 30
+                },
+                "code": "",
+                "visibility": "public",
+                "attributeType": "str",
+                "implementationType": "none",
+                "stateMachineId": "",
+                "quantumCircuitId": "",
+                "isOptional": false,
+                "isDerived": false,
+                "isId": false,
+                "isExternalId": false
+              },
+              "52144c9a-aa51-460e-b663-0462b8af613d": {
+                "id": "52144c9a-aa51-460e-b663-0462b8af613d",
+                "name": "confirmed",
+                "type": "ClassAttribute",
+                "owner": "b6cc9a94-e775-432b-93b4-2ed3e808b22a",
+                "bounds": {
+                  "x": -320.5,
+                  "y": -540.5,
+                  "width": 159,
+                  "height": 30
+                },
+                "code": "",
+                "visibility": "public",
+                "attributeType": "str",
+                "implementationType": "none",
+                "stateMachineId": "",
+                "quantumCircuitId": "",
+                "isOptional": false,
+                "isDerived": false,
+                "isId": false,
+                "isExternalId": false
+              },
+              "313958d4-b9dd-4855-b620-391f52187a78": {
+                "id": "313958d4-b9dd-4855-b620-391f52187a78",
+                "name": "canceled",
+                "type": "ClassAttribute",
+                "owner": "b6cc9a94-e775-432b-93b4-2ed3e808b22a",
+                "bounds": {
+                  "x": -320.5,
+                  "y": -510.5,
+                  "width": 159,
+                  "height": 30
+                },
+                "code": "",
+                "visibility": "public",
+                "attributeType": "str",
+                "implementationType": "none",
+                "stateMachineId": "",
+                "quantumCircuitId": "",
+                "isOptional": false,
+                "isDerived": false,
+                "isId": false,
+                "isExternalId": false
+              },
+              "851c0af1-39f1-4021-85f6-8f849eb6245f": {
+                "id": "851c0af1-39f1-4021-85f6-8f849eb6245f",
+                "name": "StayStatus",
+                "type": "Enumeration",
+                "owner": null,
+                "bounds": {
+                  "x": -520,
+                  "y": -621,
+                  "width": 160,
+                  "height": 140
+                },
+                "attributes": [
+                  "4f0e3363-993f-4669-8a8f-a0010ac4e57c",
+                  "8aa2a23f-79bc-46c9-9b9d-9b86ef8ee14a",
+                  "f1076a90-12c2-45bc-92d6-2529f0b461a1"
+                ],
+                "methods": []
+              },
+              "4f0e3363-993f-4669-8a8f-a0010ac4e57c": {
+                "id": "4f0e3363-993f-4669-8a8f-a0010ac4e57c",
+                "name": "not_arrived",
+                "type": "ClassAttribute",
+                "owner": "851c0af1-39f1-4021-85f6-8f849eb6245f",
+                "bounds": {
+                  "x": -519.5,
+                  "y": -570.5,
+                  "width": 159,
+                  "height": 30
+                },
+                "code": "",
+                "visibility": "public",
+                "attributeType": "str",
+                "implementationType": "none",
+                "stateMachineId": "",
+                "quantumCircuitId": "",
+                "isOptional": false,
+                "isDerived": false,
+                "isId": false,
+                "isExternalId": false
+              },
+              "8aa2a23f-79bc-46c9-9b9d-9b86ef8ee14a": {
+                "id": "8aa2a23f-79bc-46c9-9b9d-9b86ef8ee14a",
+                "name": "checked_in",
+                "type": "ClassAttribute",
+                "owner": "851c0af1-39f1-4021-85f6-8f849eb6245f",
+                "bounds": {
+                  "x": -519.5,
+                  "y": -540.5,
+                  "width": 159,
+                  "height": 30
+                },
+                "code": "",
+                "visibility": "public",
+                "attributeType": "str",
+                "implementationType": "none",
+                "stateMachineId": "",
+                "quantumCircuitId": "",
+                "isOptional": false,
+                "isDerived": false,
+                "isId": false,
+                "isExternalId": false
+              },
+              "f1076a90-12c2-45bc-92d6-2529f0b461a1": {
+                "id": "f1076a90-12c2-45bc-92d6-2529f0b461a1",
+                "name": "checked_out",
+                "type": "ClassAttribute",
+                "owner": "851c0af1-39f1-4021-85f6-8f849eb6245f",
+                "bounds": {
+                  "x": -519.5,
+                  "y": -510.5,
+                  "width": 159,
+                  "height": 30
+                },
+                "code": "",
+                "visibility": "public",
+                "attributeType": "str",
+                "implementationType": "none",
+                "stateMachineId": "",
+                "quantumCircuitId": "",
+                "isOptional": false,
+                "isDerived": false,
+                "isId": false,
+                "isExternalId": false
+              },
+              "04a2ca9d-c38a-4a8c-a663-c5f58d6688ba": {
+                "id": "04a2ca9d-c38a-4a8c-a663-c5f58d6688ba",
+                "name": "ReservedRoom",
+                "type": "Class",
+                "owner": null,
+                "bounds": {
+                  "x": 40,
+                  "y": -138,
+                  "width": 220,
+                  "height": 70
+                },
+                "attributes": [
+                  "5fd69664-d6ca-4b29-9334-09c42b68c381"
+                ],
+                "methods": []
+              },
+              "5fd69664-d6ca-4b29-9334-09c42b68c381": {
+                "id": "5fd69664-d6ca-4b29-9334-09c42b68c381",
+                "name": "agreed_price",
+                "type": "ClassAttribute",
+                "owner": "04a2ca9d-c38a-4a8c-a663-c5f58d6688ba",
+                "bounds": {
+                  "x": 40.5,
+                  "y": -97.5,
+                  "width": 219,
+                  "height": 30
+                },
+                "code": "",
+                "visibility": "public",
+                "attributeType": "float",
+                "implementationType": "none",
+                "stateMachineId": "",
+                "quantumCircuitId": "",
+                "isOptional": false,
+                "isDerived": false,
+                "isId": false,
+                "isExternalId": false
+              }
+            },
+            "relationships": {
+              "9528c906-6680-4fbd-ab12-b5ee42b563d5": {
+                "id": "9528c906-6680-4fbd-ab12-b5ee42b563d5",
+                "name": "",
+                "type": "ClassInheritance",
+                "owner": null,
+                "bounds": {
+                  "x": -864.5,
+                  "y": -239,
+                  "width": 10,
+                  "height": 228
+                },
+                "path": [
+                  {
+                    "x": 5,
+                    "y": 228
+                  },
+                  {
+                    "x": 5,
+                    "y": 0
+                  }
+                ],
+                "source": {
+                  "direction": "Up",
+                  "element": "8f674936-5ef4-4886-9a09-acd66286a9f4",
+                  "multiplicity": "",
+                  "role": ""
+                },
+                "target": {
+                  "direction": "Bottomleft",
+                  "element": "25fb35f9-2879-4e5f-83d4-e5d35b916f50",
+                  "multiplicity": "",
+                  "role": ""
+                },
+                "isManuallyLayouted": false
+              },
+              "a85841f2-37eb-4133-8aee-4ec8ce7308aa": {
+                "id": "a85841f2-37eb-4133-8aee-4ec8ce7308aa",
+                "name": "",
+                "type": "ClassInheritance",
+                "owner": null,
+                "bounds": {
+                  "x": -763,
+                  "y": -239,
+                  "width": 10,
+                  "height": 101
+                },
+                "path": [
+                  {
+                    "x": 5,
+                    "y": 101
+                  },
+                  {
+                    "x": 5,
+                    "y": 0
+                  }
+                ],
+                "source": {
+                  "direction": "Up",
+                  "element": "405d1931-b9df-4762-98a9-b5a3f35919e9",
+                  "multiplicity": "",
+                  "role": ""
+                },
+                "target": {
+                  "direction": "Bottomleft",
+                  "element": "25fb35f9-2879-4e5f-83d4-e5d35b916f50",
+                  "multiplicity": "",
+                  "role": ""
+                },
+                "isManuallyLayouted": false
+              },
+              "2993d6bc-7a61-4800-9dce-4e31bfe53c66": {
+                "id": "2993d6bc-7a61-4800-9dce-4e31bfe53c66",
+                "name": "",
+                "type": "ClassBidirectional",
+                "owner": null,
+                "bounds": {
+                  "x": -644,
+                  "y": -248,
+                  "width": 261,
+                  "height": 179.66666793823242
+                },
+                "path": [
+                  {
+                    "x": 0,
+                    "y": 140
+                  },
+                  {
+                    "x": 130.5,
+                    "y": 140
+                  },
+                  {
+                    "x": 130.5,
+                    "y": 10
+                  },
+                  {
+                    "x": 261,
+                    "y": 10
+                  }
+                ],
+                "source": {
+                  "direction": "Downright",
+                  "element": "405d1931-b9df-4762-98a9-b5a3f35919e9",
+                  "multiplicity": "1",
+                  "role": "managed_by"
+                },
+                "target": {
+                  "direction": "Downleft",
+                  "element": "9d074b4e-e210-4363-a9c7-1a1e96d5b8e5",
+                  "multiplicity": "0..*",
+                  "role": "manages"
+                },
+                "isManuallyLayouted": false
+              },
+              "ebfec555-587d-4afb-917a-3686d7350397": {
+                "id": "ebfec555-587d-4afb-917a-3686d7350397",
+                "name": "",
+                "type": "ClassBidirectional",
+                "owner": null,
+                "bounds": {
+                  "x": -797,
+                  "y": -183,
+                  "width": 545.9557304382324,
+                  "height": 241.66666793823242
+                },
+                "path": [
+                  {
+                    "x": 516.5,
+                    "y": 0
+                  },
+                  {
+                    "x": 516.5,
+                    "y": 202
+                  },
+                  {
+                    "x": 0,
+                    "y": 202
+                  }
+                ],
+                "source": {
+                  "direction": "Bottomleft",
+                  "element": "9d074b4e-e210-4363-a9c7-1a1e96d5b8e5",
+                  "multiplicity": "0..*",
+                  "role": "staying"
+                },
+                "target": {
+                  "direction": "Downright",
+                  "element": "8f674936-5ef4-4886-9a09-acd66286a9f4",
+                  "multiplicity": "1..*",
+                  "role": "guests"
+                },
+                "isManuallyLayouted": false
+              },
+              "9f2744dd-8ed1-4d8a-bccd-005765521b18": {
+                "id": "9f2744dd-8ed1-4d8a-bccd-005765521b18",
+                "name": "",
+                "type": "ClassBidirectional",
+                "owner": null,
+                "bounds": {
+                  "x": -712,
+                  "y": -331,
+                  "width": 329,
+                  "height": 49.66666793823242
+                },
+                "path": [
+                  {
+                    "x": 329,
+                    "y": 10
+                  },
+                  {
+                    "x": 0,
+                    "y": 10
+                  }
+                ],
+                "source": {
+                  "direction": "Left",
+                  "element": "9d074b4e-e210-4363-a9c7-1a1e96d5b8e5",
+                  "multiplicity": "0..*",
+                  "role": "bookings"
+                },
+                "target": {
+                  "direction": "Right",
+                  "element": "25fb35f9-2879-4e5f-83d4-e5d35b916f50",
+                  "multiplicity": "1",
+                  "role": "booking_contact"
+                },
+                "isManuallyLayouted": false
+              },
+              "5d91f1ec-96fe-42d9-b277-786aef463c58": {
+                "id": "5d91f1ec-96fe-42d9-b277-786aef463c58",
+                "name": "",
+                "type": "ClassBidirectional",
+                "owner": null,
+                "bounds": {
+                  "x": 27,
+                  "y": -269.5,
+                  "width": 245,
+                  "height": 49.66666793823242
+                },
+                "path": [
+                  {
+                    "x": 245,
+                    "y": 10
+                  },
+                  {
+                    "x": 0,
+                    "y": 10
+                  }
+                ],
+                "source": {
+                  "direction": "Left",
+                  "element": "ada438a7-870a-42c7-a74f-5b6c709d26d1",
+                  "multiplicity": "1..*",
+                  "role": "rooms"
+                },
+                "target": {
+                  "direction": "Right",
+                  "element": "9d074b4e-e210-4363-a9c7-1a1e96d5b8e5",
+                  "multiplicity": "0..*",
+                  "role": "booking"
+                },
+                "isManuallyLayouted": false
+              },
+              "8597b50d-ffba-4b60-a098-16587b12fa54": {
+                "id": "8597b50d-ffba-4b60-a098-16587b12fa54",
+                "name": "",
+                "type": "ClassLinkRel",
+                "owner": null,
+                "bounds": {
+                  "x": 144.96707846806376,
+                  "y": -259.5,
+                  "width": 10,
+                  "height": 121.5
+                },
+                "path": [
+                  {
+                    "x": 5.032921531936239,
+                    "y": 121.5
+                  },
+                  {
+                    "x": 4.532921531936239,
+                    "y": 0
+                  }
+                ],
+                "source": {
+                  "direction": "Up",
+                  "element": "04a2ca9d-c38a-4a8c-a663-c5f58d6688ba",
+                  "multiplicity": "",
+                  "role": ""
+                },
+                "target": {
+                  "direction": "Center",
+                  "element": "5d91f1ec-96fe-42d9-b277-786aef463c58",
+                  "multiplicity": "",
+                  "role": ""
+                },
+                "isManuallyLayouted": false
+              }
+            },
+            "assessments": {}
+          },
+          "lastUpdate": "2026-09-09T06:45:44.192Z"
+        }
+      ]
+    },
+    "settings": {
+      "defaultDiagramType": "ClassDiagram",
+      "autoSave": true,
+      "collaborationEnabled": false,
+      "perspectives": {
+        "ClassDiagram": true,
+        "ObjectDiagram": true,
+        "StateMachineDiagram": true,
+        "AgentDiagram": true,
+        "UserDiagram": true,
+        "GUINoCodeDiagram": true,
+        "QuantumCircuitDiagram": true,
+        "NNDiagram": true,
+        "BPMN": true
+      }
+    }
+  },
+  "exportedAt": "2026-09-09T06:47:34.023Z",
+  "version": "2.0.0"
+}
