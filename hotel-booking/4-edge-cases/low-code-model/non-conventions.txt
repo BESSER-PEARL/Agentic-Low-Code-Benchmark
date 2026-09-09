@@ -1,0 +1,2 @@
+- The hotel only accepts children below 8 years old.
+- The checkout date should always be before the checkin date.
