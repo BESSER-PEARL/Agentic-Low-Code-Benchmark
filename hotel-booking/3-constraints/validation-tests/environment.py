@@ -3,8 +3,8 @@ import sys
 import requests
 from playwright.sync_api import sync_playwright
 
-# Ensure project root is on sys.path so "testing.steps.*" imports work
-_PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+# This directory holds the steps package, so it is what has to be importable
+_PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
 if _PROJECT_ROOT not in sys.path:
     sys.path.insert(0, _PROJECT_ROOT)
 

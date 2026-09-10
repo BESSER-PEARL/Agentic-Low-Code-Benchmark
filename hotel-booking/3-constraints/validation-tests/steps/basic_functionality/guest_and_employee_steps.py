@@ -1,6 +1,6 @@
 """Step definitions for guest_and_employee_management.feature."""
 from behave import given, when, then
-from testing.steps.helpers import (
+from steps.basic_functionality.helpers import (
     next_id, api_post, api_put, navigate_to, wait_for_table, open_add_modal,
     fill_text_input, submit_form, modal_is_visible, get_modal_error,
     find_row_by_text, get_cell_in_row, click_edit_in_row, click_remove_in_row,

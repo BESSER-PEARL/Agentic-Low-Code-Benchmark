@@ -1,6 +1,6 @@
 """Common background and hook steps."""
 from behave import given, then
-from testing.steps.helpers import navigate_to
+from steps.basic_functionality.helpers import navigate_to
 
 @given("the hotel booking application is running and the database is empty")
 def step_app_running_and_empty(context):

@@ -1,13 +1,13 @@
 """Step definitions for booking_management.feature."""
 from behave import given, when, then
-from testing.steps.helpers import (
+from steps.basic_functionality.helpers import (
     api_post, api_get, next_id, navigate_to, wait_for_table, open_add_modal,
     fill_text_input, fill_select_by_label, check_list_item, submit_form,
     modal_is_visible, get_modal_error, find_row_by_text, get_cell_in_row,
     click_edit_in_row, count_table_rows
 )
-from testing.steps.guest_and_employee_steps import create_guest_via_api, create_employee_via_api
-from testing.steps.room_steps import create_room_via_api
+from steps.basic_functionality.guest_and_employee_steps import create_guest_via_api, create_employee_via_api
+from steps.basic_functionality.room_steps import create_room_via_api
 
 BOOKING_TABLE = "table-booking-1"
 B_COL_ID, B_COL_CHECK_IN, B_COL_CHECK_OUT = 0, 1, 2
@@ -33,13 +33,12 @@ def create_booking_via_api(context, guest_id, employee_id, room_number, check_in
     context.current_booking = booking
     return booking
 
-@given('a booking exists for guest "{guest_email}" in room {room:d} from {check_in} to {check_out}')
-def step_booking_exists_simple(context, guest_email, room, check_in, check_out):
+@given('a booking exists for guest "{guest_email}" in room {room:d} from {check_in} to {check_out} managed by "{emp_email}"')
+def step_booking_exists_managed(context, guest_email, room, check_in, check_out, emp_email):
     guest = context.guests.get(guest_email)
     if guest is None:
         guest = create_guest_via_api(context, email=guest_email)
 
-    emp_email = next(iter(context.employees)) if context.employees else "mario.rossi@hotel.com"
     employee = context.employees.get(emp_email)
     if employee is None:
         employee = create_employee_via_api(context, email=emp_email)
@@ -54,12 +53,13 @@ def step_booking_exists_simple(context, guest_email, room, check_in, check_out):
     create_booking_via_api(context, guest_id=guest["id"], employee_id=employee["id"],
                           room_number=room, check_in=check_in, check_out=check_out, price=price)
 
-@given('a booking exists for guest "{guest_email}" in room {room:d} from {check_in} to {check_out} managed by "{emp_email}"')
-def step_booking_exists_managed(context, guest_email, room, check_in, check_out, emp_email):
+@given('a booking exists for guest "{guest_email}" in room {room:d} from {check_in} to {check_out}')
+def step_booking_exists_simple(context, guest_email, room, check_in, check_out):
     guest = context.guests.get(guest_email)
     if guest is None:
         guest = create_guest_via_api(context, email=guest_email)
 
+    emp_email = next(iter(context.employees)) if context.employees else "mario.rossi@hotel.com"
     employee = context.employees.get(emp_email)
     if employee is None:
         employee = create_employee_via_api(context, email=emp_email)
@@ -179,11 +179,17 @@ def step_create_booking_via_ui(context):
                 if room_identifier in parent.inner_text():
                     if not checkbox.nth(i).is_checked():
                         checkbox.nth(i).click()
-                    # After checking the room, fill in agreed price if specified
+                    # After checking the room, fill in agreed price if specified.
+                    # The generator ids a link attribute as
+                    # modal-input-<end>-<targetId>-<attribute>, dashes around the
+                    # target: underscores address nothing, so the agreed price was
+                    # silently never entered.
                     if room_identifier in agreed_prices:
-                        price_input = parent.locator("input[type='number']").first
-                        if price_input.is_visible():
-                            fill_text_input(context, f"rooms_{room_identifier}_agreed_price", agreed_prices[room_identifier])
+                        fill_text_input(
+                            context,
+                            f"rooms-{room_identifier}-agreed_price",
+                            agreed_prices[room_identifier],
+                        )
                     break
             context.page.wait_for_timeout(100)
 

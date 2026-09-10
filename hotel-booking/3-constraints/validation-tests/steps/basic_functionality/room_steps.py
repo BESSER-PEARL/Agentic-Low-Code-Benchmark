@@ -1,6 +1,6 @@
 """Step definitions for room_management.feature."""
 from behave import given, when, then
-from testing.steps.helpers import (
+from steps.basic_functionality.helpers import (
     api_post, navigate_to, wait_for_table, open_add_modal,
     fill_text_input, submit_form, modal_is_visible, get_modal_error,
     find_row_by_text, get_cell_in_row, click_edit_in_row, click_remove_in_row,
@@ -11,6 +11,13 @@ ROOM_TABLE = "table-room-2"
 R_COL_NUMBER, R_COL_MAX_PEOPLE, R_COL_DESCRIPTION, R_COL_PRICE = 0, 1, 2, 3
 
 def create_room_via_api(context, number, max_people=2, description="Standard room", price=90.0):
+    """Create the room, or hand back the one already there.
+
+    A scenario reaches this through several Given steps (its own and the ones it
+    reuses), and the second call would otherwise fail on the unique room number.
+    """
+    if number in context.rooms:
+        return context.rooms[number]
     data = {"number": number, "max_people": max_people, "description": description, "price": price}
     room = api_post(context, "/room/", data)
     # Ensure response has number field for later use

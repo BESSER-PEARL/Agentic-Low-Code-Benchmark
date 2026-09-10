@@ -1,4 +1,6 @@
 """Shared UI and API helpers for Behave step definitions."""
+import re
+
 import requests
 
 def next_id(context):
@@ -151,6 +153,21 @@ def find_row_by_text(context, table_id, text):
 
 def get_cell_in_row(row_locator, col_index):
     return row_locator.locator("td").nth(col_index).inner_text().strip()
+
+def get_cell(context, table_id, row_locator, field):
+    """A row's cell for a field, located by the column header.
+
+    The generator emits the columns in the order the model yields them, not the
+    order the attributes were declared, so a fixed index reads a neighbouring
+    column: the invoice amount was being read out of the issued-date column.
+    """
+    headers = context.page.locator(f"#{table_id} thead th").all_inner_texts()
+    wanted = field.replace("_", " ").strip().lower()
+    for index, header in enumerate(headers):
+        label = re.sub(r"[^a-z ]", "", header.strip().lower()).strip()
+        if label == wanted:
+            return row_locator.locator("td").nth(index).inner_text().strip()
+    raise AssertionError(f"No column for {field!r}; headers were {headers}")
 
 def click_edit_in_row(context, table_id, row_text):
     row = find_row_by_text(context, table_id, row_text)

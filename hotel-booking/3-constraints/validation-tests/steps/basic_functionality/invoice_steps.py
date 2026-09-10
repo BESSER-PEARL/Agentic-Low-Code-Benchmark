@@ -1,9 +1,9 @@
 """Step definitions for invoice_viewing.feature."""
 from behave import given, when, then
-from testing.steps.helpers import api_post, next_id, navigate_to, wait_for_table, find_row_by_text, count_table_rows, get_cell_in_row
-from testing.steps.booking_steps import create_booking_via_api
-from testing.steps.guest_and_employee_steps import create_guest_via_api, create_employee_via_api
-from testing.steps.room_steps import create_room_via_api
+from steps.basic_functionality.helpers import api_post, next_id, navigate_to, wait_for_table, find_row_by_text, count_table_rows, get_cell_in_row, get_cell
+from steps.basic_functionality.booking_steps import create_booking_via_api
+from steps.basic_functionality.guest_and_employee_steps import create_guest_via_api, create_employee_via_api
+from steps.basic_functionality.room_steps import create_room_via_api
 from datetime import date
 
 INVOICE_TABLE = "table-invoice-5"
@@ -56,7 +56,7 @@ def step_see_invoice_amount(context, amount):
     invoice = context.current_invoice
     row = find_row_by_text(context, INVOICE_TABLE, str(invoice["id"]))
     assert row.is_visible(), f"Expected invoice {invoice['id']} to be visible"
-    cell_amount = float(get_cell_in_row(row, I_COL_AMOUNT))
+    cell_amount = float(get_cell(context, INVOICE_TABLE, row, "amount"))
     assert cell_amount == amount, f"Expected amount {amount}, got {cell_amount}"
 
 @then("I should see that the invoice is not paid")
@@ -65,7 +65,7 @@ def step_invoice_not_paid(context):
     navigate_to(context, "/invoice")
     wait_for_table(context, INVOICE_TABLE)
     row = find_row_by_text(context, INVOICE_TABLE, str(invoice["id"]))
-    cell_paid = get_cell_in_row(row, I_COL_PAID)
+    cell_paid = get_cell(context, INVOICE_TABLE, row, "paid")
     assert cell_paid.lower() in ["no", "false", "not paid"], f"Expected unpaid invoice, got {cell_paid}"
 
 @then("I should see the invoice's issued date")
@@ -74,7 +74,7 @@ def step_see_invoice_date(context):
     navigate_to(context, "/invoice")
     wait_for_table(context, INVOICE_TABLE)
     row = find_row_by_text(context, INVOICE_TABLE, str(invoice["id"]))
-    cell_date = get_cell_in_row(row, I_COL_ISSUED_DATE)
+    cell_date = get_cell(context, INVOICE_TABLE, row, "issued_date")
     assert cell_date, f"Expected issued date to be visible"
 
 @then("the list should include the invoice for that booking")
