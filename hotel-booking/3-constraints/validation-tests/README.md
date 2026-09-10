@@ -63,16 +63,7 @@ features/
 - **Bookings**: create, read, update dates, list by employee / by guest
 - **Invoices**: view a booking's bill, list unpaid bills, handle "no bill yet"
 
-### `constraints/` — rules a record must always satisfy
-- **Person contact validation**: valid/invalid email and phone formats
-- **Booking dates**: arrival must never fall after departure
-- **Booking capacity**: guest count must never exceed the combined capacity of the
-  booked rooms, including when rooms are added or removed
-- **Booking associations**: at least one guest, at least one room, exactly one
-  contact, exactly one responsible employee, at most one bill, and a room may
-  belong to any number of bookings, or none
-
-### `complex_behavior/` — the actions a booking or bill can perform
+### `behavior/` — the actions a booking or bill can perform
 - **Price calculation**: computing the amount owed across single/multiple rooms,
   with/without additional charges
 - **Booking lifecycle**: initial state, registering arrival/departure, cancelling a
@@ -81,22 +72,14 @@ features/
 - **Invoice payment**: registering a bill's payment, confirming the booking,
   rejecting a duplicate payment
 
-## Tags
-
-Each scenario is tagged along the dimensions the benchmark evaluates:
-
-| Tag              | Meaning                                                                      |
-|-------------------|-------------------------------------------------------------------------------|
-| `@correctness`   | Checks the resulting behavior/data is right, not just "no crash"             |
-| `@completeness`  | Marks the scenario as covering a distinct requirement, so the full set of `@completeness` scenarios maps onto the full set of things the requirements specify |
-
-as well as by entity (`@guest`, `@employee`, `@room`, `@booking`, `@invoice`), by test
-category (`@crud`, `@constraints`, `@complex-behavior`), and, within
-`complex_behavior`, by concern (`@pricing`, `@lifecycle`).
-
-Every scenario in this suite is tagged `@correctness @completeness`: each one both
-covers a distinct requirement (completeness) and checks that the resulting
-behavior/data is actually right, not just "didn't crash" (correctness).
+### `constraints/` — rules a record must always satisfy
+- **Person contact validation**: valid/invalid email and phone formats
+- **Booking dates**: arrival must never fall after departure
+- **Booking capacity**: guest count must never exceed the combined capacity of the
+  booked rooms, including when rooms are added or removed
+- **Booking associations**: at least one guest, at least one room, exactly one
+  contact, exactly one responsible employee, at most one bill, and a room may
+  belong to any number of bookings, or none
 
 ## Notes on assumptions
 
