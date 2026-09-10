@@ -116,16 +116,18 @@ def modal_is_visible(context):
     return context.page.locator(".bsr-modal").is_visible()
 
 def get_modal_error(context):
-    modal = context.page.locator(".bsr-modal")
-    # Check for error divs with background color style
-    err = modal.locator("[style*='fee2e2']").first
-    if err.is_visible():
-        return err.inner_text().strip()
-    # Also check for any error text in the modal
-    error_text = modal.locator("div").filter(has_text="error").first
-    if error_text.is_visible():
-        return error_text.inner_text().strip()
-    return ""
+    """The reason the dialog is refusing to close.
+
+    React writes the inline colour as rgb(), so selecting on the generator's
+    #fee2e2 matched nothing and every refused operation read back as having no
+    message at all.
+    """
+    err = context.page.locator(".bsr-modal [style*='rgb(254, 226, 226)']").first
+    try:
+        err.wait_for(state="visible", timeout=5000)
+    except Exception:
+        return ""
+    return err.inner_text().strip()
 
 def close_modal_if_open(context):
     if modal_is_visible(context):

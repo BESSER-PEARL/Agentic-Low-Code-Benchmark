@@ -51,8 +51,16 @@ def step_guest_exists_with_details(context):
 
 @given("the following guests exist:")
 def step_multiple_guests_exist(context):
+    # Only the email identifies a guest in the features; a table that lists just
+    # that column is as valid as one that spells out every field.
+    headings = context.table.headings
     for row in context.table:
-        create_guest_via_api(context, name=row["name"], last_name=row["last_name"], email=row["email"])
+        create_guest_via_api(
+            context,
+            name=row["name"] if "name" in headings else "Guest",
+            last_name=row["last_name"] if "last_name" in headings else "Test",
+            email=row["email"],
+        )
 
 @given("that guest has no bookings")
 def step_guest_has_no_bookings(context):
