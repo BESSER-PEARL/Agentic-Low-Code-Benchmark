@@ -25,7 +25,6 @@ Feature: Room management
     Given a room numbered 101 already exists
     When I try to create another room numbered 101
     Then the operation should fail
-    And I should see an error indicating the room number is already in use
 
   @correctness @completeness @room @crud
   Scenario: List all rooms

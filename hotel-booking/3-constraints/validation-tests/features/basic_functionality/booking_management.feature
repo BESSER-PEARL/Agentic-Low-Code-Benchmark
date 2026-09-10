@@ -21,7 +21,7 @@ Feature: Booking management
       | check_in   | check_out  | booking_contact       | guests                | rooms | managed_by             |
       | 2026-11-01 | 2026-11-05 | jane.doe@example.com  | jane.doe@example.com  | 101   | mario.rossi@hotel.com  |
     Then the operation should succeed
-    And the booking should exist with check-in date 2026-10-01 and check-out date 2026-10-05
+    And the booking should exist with check-in date 2026-11-01 and check-out date 2026-11-05
     And the new booking's status should be "pending_payment"
     And the new booking's stay status should be "not_arrived"
 
@@ -36,7 +36,7 @@ Feature: Booking management
 
   @correctness @completeness @booking @crud
   Scenario: List all bookings managed by an employee
-    Given a booking exists for guest "jane.doe@example.com" in room 101 from 2026-10-01 to 2026-10-05 managed by "mario.rossi@hotel.com"
+    Given a booking exists for guest "jane.doe@example.com" in room 101 from 2027-10-01 to 2027-10-05 managed by "mario.rossi@hotel.com"
     When I request the bookings managed by employee "mario.rossi@hotel.com"
     Then the list should contain 1 booking
 
@@ -52,3 +52,10 @@ Feature: Booking management
     When I update that booking's check-in date to 2026-10-02 and check-out date to 2026-10-06
     Then the operation should succeed
     And the booking should exist with check-in date 2026-10-02 and check-out date 2026-10-06
+
+  @correctness @completeness @booking @crud
+  Scenario: Booking price equals sum of room agreed prices
+    When I create a booking with the following details:
+      | check_in   | check_out  | booking_contact       | guests                | rooms | rooms_agreed_prices | managed_by             |
+      | 2026-11-01 | 2026-11-05 | jane.doe@example.com  | jane.doe@example.com  | 101   | 1000                | mario.rossi@hotel.com  |
+    Then the booking price should be 1000.0
