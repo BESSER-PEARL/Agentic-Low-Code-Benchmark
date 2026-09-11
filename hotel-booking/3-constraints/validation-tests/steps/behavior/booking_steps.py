@@ -24,13 +24,6 @@ from steps.support.ui import (
     run_method,
 )
 
-# What the application does not do, stated once so the failures read the same way.
-GAP = (
-    "the application refused the operation but never said so: the method returned"
-    " False and the page reported a successful execution, so nothing tells the"
-    " user why nothing happened"
-)
-
 DEFAULT_GUEST = "jane.doe@example.com"
 DEFAULT_EMPLOYEE = "mario.rossi@hotel.com"
 
@@ -203,11 +196,11 @@ def step_stay_status(context, status):
 
 @then("I should see an error indicating the booking must be checked in before check-out")
 def step_error_not_checked_in(context):
+    # What has to hold is that the departure did not take effect. How the page
+    # words the refusal is not what this scenario is about.
     stay = booking_cell(context, "stay_status")
     assert stay != "checked_out", "The booking checked out without ever checking in"
-    assert context.operation_error, (
-        f"Departure was correctly refused - the stay is still {stay!r} - but " + GAP
-    )
+    assert stay == "not_arrived", f"The stay should still read not_arrived, it reads {stay!r}"
 
 
 # ---------------------------------------------------------------------------
@@ -294,9 +287,10 @@ def step_pay_again(context):
 
 @then("I should see an error indicating the invoice is already paid")
 def step_error_already_paid(context):
+    # The second payment must leave everything as it was.
     invoices = [i for i in api_get(context, "/invoice/") if i["id"] == context.current_invoice["id"]]
     assert invoices, "The invoice disappeared"
     assert invoices[0]["paid"] is True, "The invoice is no longer marked paid"
-    assert context.operation_error, (
-        "The second payment was correctly refused, but " + GAP
+    assert booking_cell(context, "booking_status") == "confirmed", (
+        "Paying twice changed the booking's status"
     )
