@@ -24,6 +24,13 @@ from steps.support.ui import (
     run_method,
 )
 
+# What the application does not do, stated once so the failures read the same way.
+GAP = (
+    "the application refused the operation but never said so: the method returned"
+    " False and the page reported a successful execution, so nothing tells the"
+    " user why nothing happened"
+)
+
 DEFAULT_GUEST = "jane.doe@example.com"
 DEFAULT_EMPLOYEE = "mario.rossi@hotel.com"
 
@@ -76,8 +83,8 @@ def step_booking_with_agreed_price(context, guest, room, agreed, check_in, check
 
 @given('a booking exists for guest "{guest}" in room {room:d} with agreed price {agreed:f} and additional charges {charges:f}, from {check_in} to {check_out}')
 def step_booking_with_charges(context, guest, room, agreed, charges, check_in, check_out):
-    context.expected_additional_charges = charges
     step_booking_with_agreed_price(context, guest, room, agreed, check_in, check_out)
+    _set_link_attribute(context, room, "additional_charges", charges)
 
 
 @given('a booking exists for guest "{guest}" in rooms {first:d} and {second:d} from {check_in} to {check_out}')
@@ -96,22 +103,25 @@ def step_booking_with_two_rooms(context, guest, first, second, check_in, check_o
 
 @given("room {room:d} is reserved in that booking at agreed price {agreed:f} with no additional charges")
 def step_room_reserved_at(context, room, agreed):
-    _set_agreed_price(context, room, agreed)
+    _set_link_attribute(context, room, "agreed_price", agreed)
 
 
 @given("room {room:d} is reserved in that booking at agreed price {agreed:f} with additional charges {charges:f}")
 def step_room_reserved_at_with_charges(context, room, agreed, charges):
-    context.expected_additional_charges = charges
-    _set_agreed_price(context, room, agreed)
+    _set_link_attribute(context, room, "agreed_price", agreed)
+    _set_link_attribute(context, room, "additional_charges", charges)
 
 
-def _set_agreed_price(context, room, agreed):
+def _set_link_attribute(context, room, attribute, value):
+    """Record one value against the room reserved in this booking."""
     from steps.support.ui import edit_booking, fill_link_attribute, save_dialog
 
     edit_booking(context)
-    fill_link_attribute(context, "rooms", room, "agreed_price", str(agreed))
+    fill_link_attribute(context, "rooms", room, attribute, str(value))
     save_dialog(context)
-    assert context.operation_succeeded, f"Could not set the agreed price: {context.operation_error}"
+    assert context.operation_succeeded, (
+        f"Could not set {attribute} on room {room}: {context.operation_error}"
+    )
 
 
 # ---------------------------------------------------------------------------
@@ -160,18 +170,18 @@ def step_confirmed_booking(context, guest, room, check_in, check_out):
 @given('a checked-in booking exists for guest "{guest}" in room {room:d}')
 def step_checked_in_booking(context, guest, room):
     step_confirmed_booking(context, guest, room, "2026-10-01", "2026-10-05")
-    _run(context, "check_in")
+    _run(context, "register_arrival")
 
 
 @when("the guest checks in to that booking")
 def step_check_in(context):
-    _run(context, "check_in")
+    _run(context, "register_arrival")
 
 
 @when("the guest checks out of that booking")
 @when("I try to check out that booking")
 def step_check_out(context):
-    _run(context, "check_out")
+    _run(context, "register_departure")
 
 
 @when("I cancel that booking")
@@ -195,6 +205,9 @@ def step_stay_status(context, status):
 def step_error_not_checked_in(context):
     stay = booking_cell(context, "stay_status")
     assert stay != "checked_out", "The booking checked out without ever checking in"
+    assert context.operation_error, (
+        f"Departure was correctly refused - the stay is still {stay!r} - but " + GAP
+    )
 
 
 # ---------------------------------------------------------------------------
@@ -284,3 +297,6 @@ def step_error_already_paid(context):
     invoices = [i for i in api_get(context, "/invoice/") if i["id"] == context.current_invoice["id"]]
     assert invoices, "The invoice disappeared"
     assert invoices[0]["paid"] is True, "The invoice is no longer marked paid"
+    assert context.operation_error, (
+        "The second payment was correctly refused, but " + GAP
+    )

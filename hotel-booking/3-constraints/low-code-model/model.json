@@ -223,7 +223,7 @@
                   "width": 249,
                   "height": 30
                 },
-                "code": "def generate_invoice(self):\n    if self.invoice is not None:\n        return False\n\n\tself.invoice = Invoice(\n        issued_date=date.today(),\n        amount=self.calculate_price(),\n\t\tpaid=false\n    )\n\n    return True\n",
+                "code": "def generate_invoice(self):\n    if self.invoice is not None:\n        return False\n\n    self.invoice = Invoice(\n        issued_date=date.today(),\n        amount=self.calculate_price(),\n        paid=False\n    )\n\n    return True\n",
                 "visibility": "public",
                 "attributeType": "str",
                 "implementationType": "code",
@@ -236,7 +236,7 @@
               },
               "29198765-2be9-46b7-820a-16d5a598ecf2": {
                 "id": "29198765-2be9-46b7-820a-16d5a598ecf2",
-                "name": "+ check_in()",
+                "name": "+ register_arrival()",
                 "type": "ClassMethod",
                 "owner": "9d074b4e-e210-4363-a9c7-1a1e96d5b8e5",
                 "bounds": {
@@ -245,7 +245,7 @@
                   "width": 249,
                   "height": 30
                 },
-                "code": "def check_in(self):\n    if self.booking_status != BookingStatus.CONFIRMED:\n        return False\n\n    if self.stay_status != StayStatus.NOT_ARRIVED:\n        return False\n\n    self.stay_status = StayStatus.CHECKED_IN\n    return True\n",
+                "code": "def register_arrival(self):\n    if self.booking_status != BookingStatus.confirmed:\n        return False\n\n    if self.stay_status != StayStatus.not_arrived:\n        return False\n\n    self.stay_status = StayStatus.checked_in\n    return True\n",
                 "visibility": "public",
                 "attributeType": "str",
                 "implementationType": "code",
@@ -258,7 +258,7 @@
               },
               "f87f5db8-8dae-41e6-8490-ddd20f94d29b": {
                 "id": "f87f5db8-8dae-41e6-8490-ddd20f94d29b",
-                "name": "+ check_out()",
+                "name": "+ register_departure()",
                 "type": "ClassMethod",
                 "owner": "9d074b4e-e210-4363-a9c7-1a1e96d5b8e5",
                 "bounds": {
@@ -267,7 +267,7 @@
                   "width": 249,
                   "height": 30
                 },
-                "code": "def check_out(self):\n    if self.stay_status != StayStatus.CHECKED_IN:\n        return False\n\n    self.stay_status = StayStatus.CHECKED_OUT\n    return True\n",
+                "code": "def register_departure(self):\n    if self.stay_status != StayStatus.checked_in:\n        return False\n\n    self.stay_status = StayStatus.checked_out\n    return True\n",
                 "visibility": "public",
                 "attributeType": "str",
                 "implementationType": "code",
@@ -289,7 +289,7 @@
                   "width": 249,
                   "height": 30
                 },
-                "code": "def cancel(self):\n    if self.booking_status == BookingStatus.CANCELED:\n        return False\n\n    if self.stay_status != StayStatus.NOT_ARRIVED:\n        return False\n\n    self.booking_status = BookingStatus.CANCELED\n    return True\n",
+                "code": "def cancel(self):\n    if self.booking_status == BookingStatus.canceled:\n        return False\n\n    if self.stay_status != StayStatus.not_arrived:\n        return False\n\n    self.booking_status = BookingStatus.canceled\n    return True\n",
                 "visibility": "public",
                 "attributeType": "str",
                 "implementationType": "code",
@@ -311,7 +311,7 @@
                   "width": 249,
                   "height": 30
                 },
-                "code": "def calculate_price(self):\n    self.price = sum(reserved_room.agreed_price for reserved_room in self.rooms)\n\treturn price",
+                "code": "def calculate_price(self):\n    nights = (self.check_out - self.check_in).days\n    total = 0\n    for reserved_room in self.reservedrooms:\n        total += reserved_room.agreed_price * nights\n        if reserved_room.additional_charges:\n            total += reserved_room.additional_charges\n    self.price = total\n    return self.price\n",
                 "visibility": "public",
                 "attributeType": "str",
                 "implementationType": "code",
@@ -875,7 +875,7 @@
                   "width": 179,
                   "height": 30
                 },
-                "code": "def pay_invoice(self):\n\tif self.paid:\n\t\treturn False\n    \t\n\tself.paid = True\n    self.stayinig.booking_status = BookingStatus.confirmed\n\treturn True\n",
+                "code": "def pay_invoice(self):\n    if self.paid:\n        return False\n\n    self.paid = True\n    self.booking.booking_status = BookingStatus.confirmed\n    return True\n",
                 "visibility": "public",
                 "attributeType": "str",
                 "implementationType": "code",
@@ -895,10 +895,11 @@
                   "x": 5,
                   "y": -127,
                   "width": 220,
-                  "height": 70
+                  "height": 100
                 },
                 "attributes": [
-                  "5fd69664-d6ca-4b29-9334-09c42b68c381"
+                  "5fd69664-d6ca-4b29-9334-09c42b68c381",
+                  "654ccb3b-d310-4803-979f-a8ab50ecad2e"
                 ],
                 "methods": []
               },
@@ -937,6 +938,28 @@
                 },
                 "description": "",
                 "constraint": "context Booking\ninv NumberOfGuestsDoesNotExceedRoomCapacity:\n    self.guests->size() <= self.rooms->collect(r | r.max_people)->sum()\n\n\ncontext Booking\ninv NoRoomDoubleBooking:\n    self.rooms.booking->select(b |\n        b.id <> self.id and\n        self.booking_status <> canceled and\n        b.booking_status <> canceled and\n        self.check_in < b.check_out and\n        b.check_in < self.check_out\n    )->isEmpty()\n\ncontext Booking\n\ninv CheckInBeforeCheckOut:\n    self.check_in <= self.check_out"
+              },
+              "654ccb3b-d310-4803-979f-a8ab50ecad2e": {
+                "id": "654ccb3b-d310-4803-979f-a8ab50ecad2e",
+                "name": "additional_charges",
+                "type": "ClassAttribute",
+                "owner": "04a2ca9d-c38a-4a8c-a663-c5f58d6688ba",
+                "bounds": {
+                  "x": 5.5,
+                  "y": -56.5,
+                  "width": 219,
+                  "height": 30
+                },
+                "code": "",
+                "visibility": "public",
+                "attributeType": "float",
+                "implementationType": "none",
+                "stateMachineId": "",
+                "quantumCircuitId": "",
+                "isOptional": true,
+                "isDerived": false,
+                "isId": false,
+                "isExternalId": false
               }
             },
             "relationships": {
@@ -2127,14 +2150,14 @@
                                       ],
                                       "attributes": {
                                         "type": "button",
-                                        "data-button-label": "+ check_in",
+                                        "data-button-label": "+ register_arrival",
                                         "data-action-type": "run-method",
                                         "data-method-class": "9d074b4e-e210-4363-a9c7-1a1e96d5b8e5",
                                         "data-method": "29198765-2be9-46b7-820a-16d5a598ecf2",
                                         "data-instance-source": "table-booking-1",
                                         "id": "i5clv"
                                       },
-                                      "button-label": "+ check_in",
+                                      "button-label": "+ register_arrival",
                                       "action-type": "run-method",
                                       "method-class": "9d074b4e-e210-4363-a9c7-1a1e96d5b8e5",
                                       "method": "29198765-2be9-46b7-820a-16d5a598ecf2",
@@ -2142,7 +2165,7 @@
                                       "components": [
                                         {
                                           "type": "textnode",
-                                          "content": "+ check_in"
+                                          "content": "+ register_arrival"
                                         }
                                       ]
                                     },
@@ -2154,14 +2177,14 @@
                                       ],
                                       "attributes": {
                                         "type": "button",
-                                        "data-button-label": "+ check_out",
+                                        "data-button-label": "+ register_departure",
                                         "data-action-type": "run-method",
                                         "data-method-class": "9d074b4e-e210-4363-a9c7-1a1e96d5b8e5",
                                         "data-method": "f87f5db8-8dae-41e6-8490-ddd20f94d29b",
                                         "data-instance-source": "table-booking-1",
                                         "id": "iqwbi"
                                       },
-                                      "button-label": "+ check_out",
+                                      "button-label": "+ register_departure",
                                       "action-type": "run-method",
                                       "method-class": "9d074b4e-e210-4363-a9c7-1a1e96d5b8e5",
                                       "method": "f87f5db8-8dae-41e6-8490-ddd20f94d29b",
@@ -2169,7 +2192,7 @@
                                       "components": [
                                         {
                                           "type": "textnode",
-                                          "content": "+ check_out"
+                                          "content": "+ register_departure"
                                         }
                                       ]
                                     },

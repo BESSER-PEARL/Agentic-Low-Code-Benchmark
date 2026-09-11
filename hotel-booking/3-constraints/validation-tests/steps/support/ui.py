@@ -202,21 +202,31 @@ def run_method(context, route, table_id, row_text, method):
 
     error = context.page.locator("div:has-text('Error:')").last
     has_error = error.count() > 0 and error.is_visible()
+    context.method_result = "" if has_error else read_result_popup(context)
+
     if has_error:
         context.operation_succeeded = False
         context.operation_error = (error.inner_text() or "").strip()
+    elif context.method_result.strip().lower().endswith("false"):
+        # The method declined - it guarded against checking out before arrival,
+        # or against a second invoice. The application returns that as a normal
+        # result, so the page reports a success whose value happens to read
+        # "False": the refusal is carried out but never announced.
+        context.operation_succeeded = False
+        context.operation_error = None
+        context.method_declined = True
     else:
         context.operation_succeeded = True
         context.operation_error = None
-        context.method_result = read_result_popup(context)
     dismiss_popups(context)
     return context.operation_succeeded
 
 
 def read_result_popup(context):
-    popup = context.page.locator("div").filter(has_text="Result").last
-    if popup.count() and popup.is_visible():
-        return (popup.inner_text() or "").strip()
+    """What the "Method Result" popup shows, if the page opened one."""
+    body = context.page.locator("pre").last
+    if body.count() and body.is_visible():
+        return (body.inner_text() or "").strip()
     return ""
 
 
