@@ -90,3 +90,26 @@ in prose but leave the exact algorithm or precondition unstated (e.g. the precis
 pricing formula, or what "released" means when a booking is cancelled), a reasonable,
 explicit assumption is stated in a comment at the top of the relevant feature file so
 it can be adjusted if the intended behavior differs.
+
+## Running the tests
+
+The scenarios drive the **generated interface** with a real browser, so the
+application under test has to be running first — backend and frontend both.
+`BENCH_API` and `BENCH_UI` point the suite at them (default
+`http://localhost:8000` and `http://localhost:3000`). Start from an empty
+database: several scenarios say so in their background and assert on counts.
+
+```bash
+behave features/                      # everything
+behave features/basic_functionality/  # one group
+```
+
+Needs `behave`, `playwright` and `requests`, plus `playwright install chromium`.
+
+## Recorded results
+
+Every number this benchmark reports is backed by a stored run under `runs/`:
+the raw `behave` output for each feature folder, next to a `manifest.json`
+recording the versions it ran against and totals parsed from those same logs.
+`python record_run.py --help` shows how to record one. See `runs/README.md` for
+how to read them, including why a failing scenario is not automatically a defect.
