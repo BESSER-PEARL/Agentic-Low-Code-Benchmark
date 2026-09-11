@@ -1,0 +1,258 @@
+USING RUNNER: behave.runner:Runner
+Feature: Booking management # features/basic_functionality/booking_management.feature:1
+  As hotel staff
+  I want to create, view, update and list bookings
+  So that stays can be organized for guests
+  Feature: Booking management  # features/basic_functionality/booking_management.feature:1
+
+  @correctness @completeness @booking @crud
+  Scenario: Create a new booking                                                             # features/basic_functionality/booking_management.feature:19
+    Given the hotel booking application is running and the database is empty                 # steps/basic_functionality/common.py:5
+    And a guest exists with email "jane.doe@example.com"                                     # steps/basic_functionality/guest_and_employee_steps.py:42
+    And an employee exists with email "mario.rossi@hotel.com"                                # steps/basic_functionality/guest_and_employee_steps.py:233
+    And a room numbered 101 exists with max_people 2 and price 90.0                          # steps/basic_functionality/room_steps.py:29
+    When I create a booking with the following details:                                      # steps/basic_functionality/booking_steps.py:77
+      | check_in   | check_out  | booking_contact      | guests               | rooms | managed_by            |
+      | 2026-11-01 | 2026-11-05 | jane.doe@example.com | jane.doe@example.com | 101   | mario.rossi@hotel.com |
+    Then the operation should succeed                                                        # steps/basic_functionality/common.py:10
+    And the booking should exist with check-in date 2026-11-01 and check-out date 2026-11-05 # steps/basic_functionality/booking_steps.py:266
+    And the new booking's status should be "pending_payment"                                 # steps/basic_functionality/booking_steps.py:276
+    And the new booking's stay status should be "not_arrived"                                # steps/basic_functionality/booking_steps.py:281
+
+  @correctness @completeness @booking @crud
+  Scenario: Retrieve booking details                                                                  # features/basic_functionality/booking_management.feature:29
+    Given the hotel booking application is running and the database is empty                          # steps/basic_functionality/common.py:5
+    And a guest exists with email "jane.doe@example.com"                                              # steps/basic_functionality/guest_and_employee_steps.py:42
+    And an employee exists with email "mario.rossi@hotel.com"                                         # steps/basic_functionality/guest_and_employee_steps.py:233
+    And a room numbered 101 exists with max_people 2 and price 90.0                                   # steps/basic_functionality/room_steps.py:29
+    Given a booking exists for guest "jane.doe@example.com" in room 101 from 2026-10-01 to 2026-10-05 # steps/basic_functionality/booking_steps.py:56
+    When I request the details of that booking                                                        # steps/basic_functionality/booking_steps.py:225
+    Then I should see the check-in date 2026-10-01                                                    # steps/basic_functionality/booking_steps.py:286
+    And I should see the check-out date 2026-10-05                                                    # steps/basic_functionality/booking_steps.py:295
+    And I should see that the booking contact is "jane.doe@example.com"                               # steps/basic_functionality/booking_steps.py:304
+    And I should see that room 101 is included in the booking                                         # steps/basic_functionality/booking_steps.py:308
+
+  @correctness @completeness @booking @crud
+  Scenario: List all bookings managed by an employee                                                                                     # features/basic_functionality/booking_management.feature:38
+    Given the hotel booking application is running and the database is empty                                                             # steps/basic_functionality/common.py:5
+    And a guest exists with email "jane.doe@example.com"                                                                                 # steps/basic_functionality/guest_and_employee_steps.py:42
+    And an employee exists with email "mario.rossi@hotel.com"                                                                            # steps/basic_functionality/guest_and_employee_steps.py:233
+    And a room numbered 101 exists with max_people 2 and price 90.0                                                                      # steps/basic_functionality/room_steps.py:29
+    Given a booking exists for guest "jane.doe@example.com" in room 101 from 2027-10-01 to 2027-10-05 managed by "mario.rossi@hotel.com" # steps/basic_functionality/booking_steps.py:36
+    When I request the bookings managed by employee "mario.rossi@hotel.com"                                                              # steps/basic_functionality/booking_steps.py:230
+    Then the list should contain 1 booking                                                                                               # steps/basic_functionality/booking_steps.py:260
+
+  @correctness @completeness @booking @crud
+  Scenario: List all bookings for a guest                                                             # features/basic_functionality/booking_management.feature:44
+    Given the hotel booking application is running and the database is empty                          # steps/basic_functionality/common.py:5
+    And a guest exists with email "jane.doe@example.com"                                              # steps/basic_functionality/guest_and_employee_steps.py:42
+    And an employee exists with email "mario.rossi@hotel.com"                                         # steps/basic_functionality/guest_and_employee_steps.py:233
+    And a room numbered 101 exists with max_people 2 and price 90.0                                   # steps/basic_functionality/room_steps.py:29
+    Given a booking exists for guest "jane.doe@example.com" in room 101 from 2026-10-01 to 2026-10-05 # steps/basic_functionality/booking_steps.py:56
+    When I request the bookings where "jane.doe@example.com" is a guest                               # steps/basic_functionality/booking_steps.py:235
+    Then the list should contain 1 booking                                                            # steps/basic_functionality/booking_steps.py:260
+
+  @correctness @completeness @booking @crud
+  Scenario: Update the check-in and check-out dates of a booking                                      # features/basic_functionality/booking_management.feature:50
+    Given the hotel booking application is running and the database is empty                          # steps/basic_functionality/common.py:5
+    And a guest exists with email "jane.doe@example.com"                                              # steps/basic_functionality/guest_and_employee_steps.py:42
+    And an employee exists with email "mario.rossi@hotel.com"                                         # steps/basic_functionality/guest_and_employee_steps.py:233
+    And a room numbered 101 exists with max_people 2 and price 90.0                                   # steps/basic_functionality/room_steps.py:29
+    Given a booking exists for guest "jane.doe@example.com" in room 101 from 2026-10-01 to 2026-10-05 # steps/basic_functionality/booking_steps.py:56
+    When I update that booking's check-in date to 2026-10-02 and check-out date to 2026-10-06         # steps/basic_functionality/booking_steps.py:240
+    Then the operation should succeed                                                                 # steps/basic_functionality/common.py:10
+    And the booking should exist with check-in date 2026-10-02 and check-out date 2026-10-06          # steps/basic_functionality/booking_steps.py:266
+
+  @correctness @completeness @booking @crud
+  Scenario: Booking price equals sum of room agreed prices                   # features/basic_functionality/booking_management.feature:57
+    Given the hotel booking application is running and the database is empty # steps/basic_functionality/common.py:5
+    And a guest exists with email "jane.doe@example.com"                     # steps/basic_functionality/guest_and_employee_steps.py:42
+    And an employee exists with email "mario.rossi@hotel.com"                # steps/basic_functionality/guest_and_employee_steps.py:233
+    And a room numbered 101 exists with max_people 2 and price 90.0          # steps/basic_functionality/room_steps.py:29
+    When I create a booking with the following details:                      # steps/basic_functionality/booking_steps.py:77
+      | check_in   | check_out  | booking_contact      | guests               | rooms | rooms_agreed_prices | managed_by            |
+      | 2026-11-01 | 2026-11-05 | jane.doe@example.com | jane.doe@example.com | 101   | 1000                | mario.rossi@hotel.com |
+    Then the booking price should be 1000.0                                  # steps/basic_functionality/booking_steps.py:312
+      ASSERT FAILED: Expected booking price 1000.0, got 0.0
+
+
+Feature: Guest and employee management # features/basic_functionality/guest_and_employee_management.feature:1
+  As a hotel staff member
+  I want to create, view, update and delete guest and employee records
+  So that the hotel keeps accurate records of the people it deals with
+  Feature: Guest and employee management  # features/basic_functionality/guest_and_employee_management.feature:1
+
+  @correctness @completeness @guest @crud
+  Scenario: Create a new guest with valid data                               # features/basic_functionality/guest_and_employee_management.feature:15
+    Given the hotel booking application is running and the database is empty # steps/basic_functionality/common.py:5
+    When I create a guest with the following details:                        # steps/basic_functionality/guest_and_employee_steps.py:73
+      | name | last_name | phone_number | email                |
+      | Jane | Doe       | +15551234567 | jane.doe@example.com |
+    Then the operation should succeed                                        # steps/basic_functionality/common.py:10
+    And a guest with email "jane.doe@example.com" should exist               # steps/basic_functionality/guest_and_employee_steps.py:159
+    And that guest's name should be "Jane"                                   # steps/basic_functionality/guest_and_employee_steps.py:173
+    And that guest's last name should be "Doe"                               # steps/basic_functionality/guest_and_employee_steps.py:182
+    And that guest's phone number should be "+15551234567"                   # steps/basic_functionality/guest_and_employee_steps.py:191
+
+  @correctness @completeness @guest @crud
+  Scenario: Retrieve an existing guest's details                                                                              # features/basic_functionality/guest_and_employee_management.feature:26
+    Given the hotel booking application is running and the database is empty                                                  # steps/basic_functionality/common.py:5
+    Given a guest exists with the following details:                                                                          # steps/basic_functionality/guest_and_employee_steps.py:46
+      | name | last_name | phone_number | email                |
+      | Jane | Doe       | +15551234567 | jane.doe@example.com |
+    When I request the guest with email "jane.doe@example.com"                                                                # steps/basic_functionality/guest_and_employee_steps.py:128
+    Then I should see a guest with name "Jane", last name "Doe", phone number "+15551234567" and email "jane.doe@example.com" # steps/basic_functionality/guest_and_employee_steps.py:200
+
+  @correctness @completeness @guest @crud
+  Scenario: List all registered guests                                       # features/basic_functionality/guest_and_employee_management.feature:34
+    Given the hotel booking application is running and the database is empty # steps/basic_functionality/common.py:5
+    Given the following guests exist:                                        # steps/basic_functionality/guest_and_employee_steps.py:52
+      | name | last_name | email                  |
+      | Jane | Doe       | jane.doe@example.com   |
+      | John | Smith     | john.smith@example.com |
+    When I request the list of all guests                                    # steps/basic_functionality/guest_and_employee_steps.py:134
+    Then the list should contain 2 guests                                    # steps/basic_functionality/guest_and_employee_steps.py:211
+    And the list should include a guest with email "jane.doe@example.com"    # steps/basic_functionality/guest_and_employee_steps.py:217
+    And the list should include a guest with email "john.smith@example.com"  # steps/basic_functionality/guest_and_employee_steps.py:217
+
+  @correctness @completeness @guest @crud
+  Scenario: Update a guest's contact information                                           # features/basic_functionality/guest_and_employee_management.feature:45
+    Given the hotel booking application is running and the database is empty               # steps/basic_functionality/common.py:5
+    Given a guest exists with email "jane.doe@example.com" and phone number "+15551234567" # steps/basic_functionality/guest_and_employee_steps.py:38
+    When I update that guest's phone number to "+15559876543"                              # steps/basic_functionality/guest_and_employee_steps.py:108
+    Then the operation should succeed                                                      # steps/basic_functionality/common.py:10
+    And that guest's phone number should be "+15559876543"                                 # steps/basic_functionality/guest_and_employee_steps.py:191
+
+  @correctness @completeness @guest @crud
+  Scenario: Delete a guest with no associated bookings                       # features/basic_functionality/guest_and_employee_management.feature:52
+    Given the hotel booking application is running and the database is empty # steps/basic_functionality/common.py:5
+    Given a guest exists with email "jane.doe@example.com"                   # steps/basic_functionality/guest_and_employee_steps.py:42
+    And that guest has no bookings                                           # steps/basic_functionality/guest_and_employee_steps.py:65
+    When I delete the guest with email "jane.doe@example.com"                # steps/basic_functionality/guest_and_employee_steps.py:139
+    Then the operation should succeed                                        # steps/basic_functionality/common.py:10
+    And a guest with email "jane.doe@example.com" should no longer exist     # steps/basic_functionality/guest_and_employee_steps.py:166
+
+  @correctness @completeness @employee @crud
+  Scenario: Create a new employee with valid data                            # features/basic_functionality/guest_and_employee_management.feature:62
+    Given the hotel booking application is running and the database is empty # steps/basic_functionality/common.py:5
+    When I create an employee with the following details:                    # steps/basic_functionality/guest_and_employee_steps.py:245
+      | name  | last_name | phone_number | email                 |
+      | Mario | Rossi     | +15552223333 | mario.rossi@hotel.com |
+    Then the operation should succeed                                        # steps/basic_functionality/common.py:10
+    And an employee with email "mario.rossi@hotel.com" should exist          # steps/basic_functionality/guest_and_employee_steps.py:326
+
+  @correctness @completeness @employee @crud
+  Scenario: Retrieve an existing employee's details                                                      # features/basic_functionality/guest_and_employee_management.feature:70
+    Given the hotel booking application is running and the database is empty                             # steps/basic_functionality/common.py:5
+    Given an employee exists with the following details:                                                 # steps/basic_functionality/guest_and_employee_steps.py:227
+      | name  | last_name | phone_number | email                 |
+      | Mario | Rossi     | +15552223333 | mario.rossi@hotel.com |
+    When I request the employee with email "mario.rossi@hotel.com"                                       # steps/basic_functionality/guest_and_employee_steps.py:281
+    Then I should see an employee with name "Mario", last name "Rossi" and email "mario.rossi@hotel.com" # steps/basic_functionality/guest_and_employee_steps.py:340
+
+  @correctness @completeness @employee @crud
+  Scenario: Update an employee's information                                 # features/basic_functionality/guest_and_employee_management.feature:78
+    Given the hotel booking application is running and the database is empty # steps/basic_functionality/common.py:5
+    Given an employee exists with email "mario.rossi@hotel.com"              # steps/basic_functionality/guest_and_employee_steps.py:233
+    When I update that employee's last name to "Bianchi"                     # steps/basic_functionality/guest_and_employee_steps.py:287
+    Then that employee's last name should be "Bianchi"                       # steps/basic_functionality/guest_and_employee_steps.py:350
+
+  @correctness @completeness @employee @crud
+  Scenario: Delete an employee who manages no bookings                        # features/basic_functionality/guest_and_employee_management.feature:84
+    Given the hotel booking application is running and the database is empty  # steps/basic_functionality/common.py:5
+    Given an employee exists with email "mario.rossi@hotel.com"               # steps/basic_functionality/guest_and_employee_steps.py:233
+    And that employee manages no bookings                                     # steps/basic_functionality/guest_and_employee_steps.py:237
+    When I delete the employee with email "mario.rossi@hotel.com"             # steps/basic_functionality/guest_and_employee_steps.py:306
+    Then the operation should succeed                                         # steps/basic_functionality/common.py:10
+    And an employee with email "mario.rossi@hotel.com" should no longer exist # steps/basic_functionality/guest_and_employee_steps.py:333
+
+Feature: Invoice viewing and listing # features/basic_functionality/invoice_viewing.feature:1
+  As hotel staff
+  I want to view and list invoices
+  So that I can track billing for bookings
+  Feature: Invoice viewing and listing  # features/basic_functionality/invoice_viewing.feature:1
+
+  @correctness @completeness @invoice @crud
+  Scenario: Retrieve the invoice of a booking                                # features/basic_functionality/invoice_viewing.feature:16
+    Given the hotel booking application is running and the database is empty # steps/basic_functionality/common.py:5
+    And a booking exists with an invoice for amount 360.0 that is not paid   # steps/basic_functionality/invoice_steps.py:22
+    When I request the invoice for that booking                              # steps/basic_functionality/invoice_steps.py:42
+    Then I should see an invoice with amount 360.0                           # steps/basic_functionality/invoice_steps.py:52
+    And I should see that the invoice is not paid                            # steps/basic_functionality/invoice_steps.py:62
+    And I should see the invoice's issued date                               # steps/basic_functionality/invoice_steps.py:71
+
+  @correctness @completeness @invoice @crud
+  Scenario: List all unpaid invoices                                         # features/basic_functionality/invoice_viewing.feature:23
+    Given the hotel booking application is running and the database is empty # steps/basic_functionality/common.py:5
+    And a booking exists with an invoice for amount 360.0 that is not paid   # steps/basic_functionality/invoice_steps.py:22
+    When I request the list of unpaid invoices                               # steps/basic_functionality/invoice_steps.py:47
+    Then the list should include the invoice for that booking                # steps/basic_functionality/invoice_steps.py:80
+
+  @correctness @completeness @invoice @crud
+  Scenario: A booking without an invoice yet has no invoice to retrieve      # features/basic_functionality/invoice_viewing.feature:28
+    Given the hotel booking application is running and the database is empty # steps/basic_functionality/common.py:5
+    And a booking exists with an invoice for amount 360.0 that is not paid   # steps/basic_functionality/invoice_steps.py:22
+    Given a booking exists with no invoice                                   # steps/basic_functionality/invoice_steps.py:32
+    When I request the invoice for that booking                              # steps/basic_functionality/invoice_steps.py:42
+    Then I should be informed that the booking has no invoice                # steps/basic_functionality/invoice_steps.py:88
+
+Feature: Room management # features/basic_functionality/room_management.feature:1
+  As a hotel staff member
+  I want to create, view, update and delete rooms
+  So that the hotel can manage its room inventory
+  Feature: Room management  # features/basic_functionality/room_management.feature:1
+
+  @correctness @completeness @room @crud
+  Scenario: Create a new room                                                # features/basic_functionality/room_management.feature:14
+    Given the hotel booking application is running and the database is empty # steps/basic_functionality/common.py:5
+    When I create a room with the following details:                         # steps/basic_functionality/room_steps.py:55
+      | number | max_people | description           | price |
+      | 101    | 2          | Double room, sea view | 90.0  |
+    Then the operation should succeed                                        # steps/basic_functionality/common.py:10
+    And a room numbered 101 should exist                                     # steps/basic_functionality/room_steps.py:173
+    And that room's maximum occupancy should be 2                            # steps/basic_functionality/room_steps.py:188
+    And that room's price should be 90.0                                     # steps/basic_functionality/room_steps.py:197
+
+  @correctness @completeness @room @crud
+  Scenario: Room numbers are unique                                          # features/basic_functionality/room_management.feature:24
+    Given the hotel booking application is running and the database is empty # steps/basic_functionality/common.py:5
+    Given a room numbered 101 already exists                                 # steps/basic_functionality/room_steps.py:33
+    When I try to create another room numbered 101                           # steps/basic_functionality/room_steps.py:79
+    Then the operation should fail                                           # steps/basic_functionality/common.py:14
+
+  @correctness @completeness @room @crud
+  Scenario: List all rooms                                                   # features/basic_functionality/room_management.feature:30
+    Given the hotel booking application is running and the database is empty # steps/basic_functionality/common.py:5
+    Given the following rooms exist:                                         # steps/basic_functionality/room_steps.py:45
+      | number | max_people | price |
+      | 101    | 2          | 90.0  |
+      | 102    | 4          | 140.0 |
+    When I request the list of all rooms                                     # steps/basic_functionality/room_steps.py:102
+    Then the list should contain 2 rooms                                     # steps/basic_functionality/room_steps.py:161
+
+  @correctness @completeness @room @crud
+  Scenario: Update a room's price and description                             # features/basic_functionality/room_management.feature:39
+    Given the hotel booking application is running and the database is empty  # steps/basic_functionality/common.py:5
+    Given a room numbered 101 exists with price 90.0                          # steps/basic_functionality/room_steps.py:37
+    When I update that room's price to 99.0                                   # steps/basic_functionality/room_steps.py:107
+    And I update that room's description to "Renovated double room, sea view" # steps/basic_functionality/room_steps.py:126
+    Then that room's price should be 99.0                                     # steps/basic_functionality/room_steps.py:197
+    And that room's description should be "Renovated double room, sea view"   # steps/basic_functionality/room_steps.py:206
+
+  @correctness @completeness @room @crud
+  Scenario: Delete a room that is not part of any booking                    # features/basic_functionality/room_management.feature:47
+    Given the hotel booking application is running and the database is empty # steps/basic_functionality/common.py:5
+    Given a room numbered 103 exists                                         # steps/basic_functionality/room_steps.py:41
+    And that room is not part of any booking                                 # steps/basic_functionality/room_steps.py:51
+    When I delete the room numbered 103                                      # steps/basic_functionality/room_steps.py:145
+    Then the operation should succeed                                        # steps/basic_functionality/common.py:10
+    And a room numbered 103 should no longer exist                           # steps/basic_functionality/room_steps.py:181
+
+
+Failing scenarios:
+  features/basic_functionality/booking_management.feature:57  Booking price equals sum of room agreed prices
+
+3 features passed, 1 failed, 0 skipped
+22 scenarios passed, 1 failed, 0 skipped
+133 steps passed, 1 failed, 0 skipped
+Took 1min 20.496s

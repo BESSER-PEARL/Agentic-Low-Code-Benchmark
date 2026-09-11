@@ -1,0 +1,191 @@
+USING RUNNER: behave.runner:Runner
+Feature: Booking lifecycle: check-in, check-out and cancellation # features/behavior/booking_lifecycle_transitions.feature:1
+  As hotel staff
+  I want the booking and stay status to change correctly as guests arrive, stay and leave,
+  or as a booking is canceled
+  So that the state of every booking always reflects reality
+  Feature: Booking lifecycle: check-in, check-out and cancellation  # features/behavior/booking_lifecycle_transitions.feature:1
+
+  @complex-behavior @correctness @completeness @booking @lifecycle
+  Scenario: A newly created booking starts as pending payment and not arrived                            # features/behavior/booking_lifecycle_transitions.feature:21
+    Given the hotel booking application is running and the database is empty                             # steps/basic_functionality/common.py:5
+    And a guest exists with email "jane.doe@example.com"                                                 # steps/basic_functionality/guest_and_employee_steps.py:42
+    And an employee exists with email "mario.rossi@hotel.com"                                            # steps/basic_functionality/guest_and_employee_steps.py:233
+    And a room numbered 101 exists with max_people 2                                                     # steps/constraints/booking_steps.py:41
+    When a booking is created for guest "jane.doe@example.com" in room 101 from 2026-10-01 to 2026-10-05 # steps/behavior/booking_steps.py:149
+    Then the booking's status should be "pending_payment"                                                # steps/behavior/booking_steps.py:185
+    And the booking's stay status should be "not_arrived"                                                # steps/behavior/booking_steps.py:191
+
+  @complex-behavior @correctness @completeness @booking @lifecycle @invoice
+  Scenario: A booking becomes confirmed once its invoice is paid                                      # features/behavior/booking_lifecycle_transitions.feature:27
+    Given the hotel booking application is running and the database is empty                          # steps/basic_functionality/common.py:5
+    And a guest exists with email "jane.doe@example.com"                                              # steps/basic_functionality/guest_and_employee_steps.py:42
+    And an employee exists with email "mario.rossi@hotel.com"                                         # steps/basic_functionality/guest_and_employee_steps.py:233
+    And a room numbered 101 exists with max_people 2                                                  # steps/constraints/booking_steps.py:41
+    Given a booking exists for guest "jane.doe@example.com" in room 101 from 2026-10-01 to 2026-10-05 # steps/basic_functionality/booking_steps.py:56
+    And an invoice has been generated for that booking                                                # steps/behavior/booking_steps.py:215
+    When the invoice is paid in full                                                                  # steps/behavior/booking_steps.py:269
+    Then the booking's status should be "confirmed"                                                   # steps/behavior/booking_steps.py:185
+
+  @complex-behavior @correctness @completeness @booking @lifecycle
+  Scenario: Checking in a confirmed booking succeeds                                                            # features/behavior/booking_lifecycle_transitions.feature:34
+    Given the hotel booking application is running and the database is empty                                    # steps/basic_functionality/common.py:5
+    And a guest exists with email "jane.doe@example.com"                                                        # steps/basic_functionality/guest_and_employee_steps.py:42
+    And an employee exists with email "mario.rossi@hotel.com"                                                   # steps/basic_functionality/guest_and_employee_steps.py:233
+    And a room numbered 101 exists with max_people 2                                                            # steps/constraints/booking_steps.py:41
+    Given a confirmed booking exists for guest "jane.doe@example.com" in room 101 from 2026-10-01 to 2026-10-05 # steps/behavior/booking_steps.py:154
+    When the guest checks in to that booking                                                                    # steps/behavior/booking_steps.py:169
+    Then the operation should succeed                                                                           # steps/basic_functionality/common.py:10
+    And the booking's stay status should be "checked_in"                                                        # steps/behavior/booking_steps.py:191
+
+  @complex-behavior @correctness @completeness @booking @lifecycle
+  Scenario: Checking out a booking that has checked in succeeds                    # features/behavior/booking_lifecycle_transitions.feature:41
+    Given the hotel booking application is running and the database is empty       # steps/basic_functionality/common.py:5
+    And a guest exists with email "jane.doe@example.com"                           # steps/basic_functionality/guest_and_employee_steps.py:42
+    And an employee exists with email "mario.rossi@hotel.com"                      # steps/basic_functionality/guest_and_employee_steps.py:233
+    And a room numbered 101 exists with max_people 2                               # steps/constraints/booking_steps.py:41
+    Given a checked-in booking exists for guest "jane.doe@example.com" in room 101 # steps/behavior/booking_steps.py:163
+    When the guest checks out of that booking                                      # steps/behavior/booking_steps.py:174
+    Then the operation should succeed                                              # steps/basic_functionality/common.py:10
+    And the booking's stay status should be "checked_out"                          # steps/behavior/booking_steps.py:191
+
+  @complex-behavior @correctness @completeness @booking @lifecycle
+  Scenario: Checking out a booking that never checked in is rejected                                            # features/behavior/booking_lifecycle_transitions.feature:48
+    Given the hotel booking application is running and the database is empty                                    # steps/basic_functionality/common.py:5
+    And a guest exists with email "jane.doe@example.com"                                                        # steps/basic_functionality/guest_and_employee_steps.py:42
+    And an employee exists with email "mario.rossi@hotel.com"                                                   # steps/basic_functionality/guest_and_employee_steps.py:233
+    And a room numbered 101 exists with max_people 2                                                            # steps/constraints/booking_steps.py:41
+    Given a confirmed booking exists for guest "jane.doe@example.com" in room 101 from 2026-10-01 to 2026-10-05 # steps/behavior/booking_steps.py:154
+    When I try to check out that booking                                                                        # steps/behavior/booking_steps.py:174
+    Then the operation should fail                                                                              # steps/basic_functionality/common.py:14
+    And I should see an error indicating the booking must be checked in before check-out                        # steps/behavior/booking_steps.py:197
+
+  @complex-behavior @correctness @completeness @booking @lifecycle
+  Scenario: Cancelling a booking before the guest has arrived succeeds                                # features/behavior/booking_lifecycle_transitions.feature:55
+    Given the hotel booking application is running and the database is empty                          # steps/basic_functionality/common.py:5
+    And a guest exists with email "jane.doe@example.com"                                              # steps/basic_functionality/guest_and_employee_steps.py:42
+    And an employee exists with email "mario.rossi@hotel.com"                                         # steps/basic_functionality/guest_and_employee_steps.py:233
+    And a room numbered 101 exists with max_people 2                                                  # steps/constraints/booking_steps.py:41
+    Given a booking exists for guest "jane.doe@example.com" in room 101 from 2026-10-01 to 2026-10-05 # steps/basic_functionality/booking_steps.py:56
+    When I cancel that booking                                                                        # steps/behavior/booking_steps.py:180
+    Then the operation should succeed                                                                 # steps/basic_functionality/common.py:10
+    And the booking's status should be "canceled"                                                     # steps/behavior/booking_steps.py:185
+
+Feature: Booking price calculation # features/behavior/booking_price_calculation.feature:1
+  As the system
+  I want to compute the total price of a booking from its reserved rooms
+  So that guests and staff see an accurate cost for the stay
+  Feature: Booking price calculation  # features/behavior/booking_price_calculation.feature:1
+
+  @complex-behavior @correctness @completeness @booking @pricing
+  Scenario: Price of a booking with a single room and no additional charges                                                                            # features/behavior/booking_price_calculation.feature:17
+    Given the hotel booking application is running and the database is empty                                                                           # steps/basic_functionality/common.py:5
+    And a guest exists with email "jane.doe@example.com"                                                                                               # steps/basic_functionality/guest_and_employee_steps.py:42
+    And an employee exists with email "mario.rossi@hotel.com"                                                                                          # steps/basic_functionality/guest_and_employee_steps.py:233
+    Given a room numbered 101 exists with price 100.0                                                                                                  # steps/basic_functionality/room_steps.py:37
+    And a booking exists for guest "jane.doe@example.com" in room 101 with agreed price 100.0 and no additional charges, from 2026-10-01 to 2026-10-04 # steps/behavior/booking_steps.py:65
+    When the booking's price is calculated                                                                                                             # steps/behavior/booking_steps.py:124
+    Then the resulting price should be 300.0                                                                                                           # steps/behavior/booking_steps.py:129
+
+  @complex-behavior @correctness @completeness @booking @pricing
+  Scenario: Price of a booking with a single room and additional charges                                                                                 # features/behavior/booking_price_calculation.feature:24
+    Given the hotel booking application is running and the database is empty                                                                             # steps/basic_functionality/common.py:5
+    And a guest exists with email "jane.doe@example.com"                                                                                                 # steps/basic_functionality/guest_and_employee_steps.py:42
+    And an employee exists with email "mario.rossi@hotel.com"                                                                                            # steps/basic_functionality/guest_and_employee_steps.py:233
+    Given a room numbered 101 exists with price 100.0                                                                                                    # steps/basic_functionality/room_steps.py:37
+    And a booking exists for guest "jane.doe@example.com" in room 101 with agreed price 100.0 and additional charges 25.0, from 2026-10-01 to 2026-10-04 # steps/behavior/booking_steps.py:77
+    When the booking's price is calculated                                                                                                               # steps/behavior/booking_steps.py:124
+    Then the resulting price should be 325.0                                                                                                             # steps/behavior/booking_steps.py:129
+
+  @complex-behavior @correctness @completeness @booking @pricing
+  Scenario: Price of a booking with multiple rooms                                                           # features/behavior/booking_price_calculation.feature:31
+    Given the hotel booking application is running and the database is empty                                 # steps/basic_functionality/common.py:5
+    And a guest exists with email "jane.doe@example.com"                                                     # steps/basic_functionality/guest_and_employee_steps.py:42
+    And an employee exists with email "mario.rossi@hotel.com"                                                # steps/basic_functionality/guest_and_employee_steps.py:233
+    Given a room numbered 101 exists with price 100.0                                                        # steps/basic_functionality/room_steps.py:37
+    And a room numbered 102 exists with price 150.0                                                          # steps/basic_functionality/room_steps.py:37
+    And a booking exists for guest "jane.doe@example.com" in rooms 101 and 102 from 2026-10-01 to 2026-10-03 # steps/behavior/booking_steps.py:83
+    And room 101 is reserved in that booking at agreed price 100.0 with no additional charges                # steps/behavior/booking_steps.py:97
+    And room 102 is reserved in that booking at agreed price 150.0 with additional charges 20.0              # steps/behavior/booking_steps.py:102
+    When the booking's price is calculated                                                                   # steps/behavior/booking_steps.py:124
+    Then the resulting price should be 520.0                                                                 # steps/behavior/booking_steps.py:129
+
+  @complex-behavior @correctness @completeness @booking @pricing
+  Scenario: The booking's stored price is kept up to date after calculation                                                                            # features/behavior/booking_price_calculation.feature:41
+    Given the hotel booking application is running and the database is empty                                                                           # steps/basic_functionality/common.py:5
+    And a guest exists with email "jane.doe@example.com"                                                                                               # steps/basic_functionality/guest_and_employee_steps.py:42
+    And an employee exists with email "mario.rossi@hotel.com"                                                                                          # steps/basic_functionality/guest_and_employee_steps.py:233
+    Given a room numbered 101 exists with price 100.0                                                                                                  # steps/basic_functionality/room_steps.py:37
+    And a booking exists for guest "jane.doe@example.com" in room 101 with agreed price 100.0 and no additional charges, from 2026-10-01 to 2026-10-04 # steps/behavior/booking_steps.py:65
+    When the booking's price is calculated                                                                                                             # steps/behavior/booking_steps.py:124
+    Then the booking's stored price should equal the calculated price                                                                                  # steps/behavior/booking_steps.py:136
+
+Feature: Invoice generation for a booking # features/behavior/invoice_generation.feature:1
+  As hotel staff
+  I want an invoice to be generated for a booking with the correct amount
+  So that the guest can be billed for the stay
+  Feature: Invoice generation for a booking  # features/behavior/invoice_generation.feature:1
+
+  @complex-behavior @correctness @completeness @invoice
+  Scenario: Generating an invoice for a booking that has none yet                                                                                      # features/behavior/invoice_generation.feature:18
+    Given the hotel booking application is running and the database is empty                                                                           # steps/basic_functionality/common.py:5
+    And a guest exists with email "jane.doe@example.com"                                                                                               # steps/basic_functionality/guest_and_employee_steps.py:42
+    And an employee exists with email "mario.rossi@hotel.com"                                                                                          # steps/basic_functionality/guest_and_employee_steps.py:233
+    And a room numbered 101 exists with price 100.0                                                                                                    # steps/basic_functionality/room_steps.py:37
+    And a booking exists for guest "jane.doe@example.com" in room 101 with agreed price 100.0 and no additional charges, from 2026-10-01 to 2026-10-04 # steps/behavior/booking_steps.py:65
+    Given that booking has no invoice                                                                                                                  # steps/behavior/booking_steps.py:210
+    When I generate an invoice for that booking                                                                                                        # steps/behavior/booking_steps.py:224
+    Then the operation should succeed                                                                                                                  # steps/basic_functionality/common.py:10
+    And that booking should now have an invoice                                                                                                        # steps/behavior/booking_steps.py:234
+    And the invoice amount should equal the booking's calculated price                                                                                 # steps/behavior/booking_steps.py:241
+    And the invoice should be marked as unpaid                                                                                                         # steps/behavior/booking_steps.py:250
+    And the invoice's issued date should be today                                                                                                      # steps/behavior/booking_steps.py:262
+
+  @complex-behavior @correctness @completeness @invoice
+  Scenario: Generating an invoice for a booking that already has one is rejected                                                                       # features/behavior/invoice_generation.feature:28
+    Given the hotel booking application is running and the database is empty                                                                           # steps/basic_functionality/common.py:5
+    And a guest exists with email "jane.doe@example.com"                                                                                               # steps/basic_functionality/guest_and_employee_steps.py:42
+    And an employee exists with email "mario.rossi@hotel.com"                                                                                          # steps/basic_functionality/guest_and_employee_steps.py:233
+    And a room numbered 101 exists with price 100.0                                                                                                    # steps/basic_functionality/room_steps.py:37
+    And a booking exists for guest "jane.doe@example.com" in room 101 with agreed price 100.0 and no additional charges, from 2026-10-01 to 2026-10-04 # steps/behavior/booking_steps.py:65
+    Given an invoice has already been generated for that booking                                                                                       # steps/behavior/booking_steps.py:215
+    When I try to generate another invoice for that booking                                                                                            # steps/behavior/booking_steps.py:229
+    Then the operation should fail                                                                                                                     # steps/basic_functionality/common.py:14
+    And I should see an error indicating the booking already has an invoice                                                                            # steps/constraints/booking_steps.py:139
+
+Feature: Invoice payment # features/behavior/invoice_payment.feature:1
+  As a guest or hotel staff member
+  I want to pay an invoice
+  So that the corresponding booking is confirmed
+  Feature: Invoice payment  # features/behavior/invoice_payment.feature:1
+
+  @complex-behavior @correctness @completeness @invoice
+  Scenario: Paying an unpaid invoice in full succeeds                                                                                                  # features/behavior/invoice_payment.feature:20
+    Given the hotel booking application is running and the database is empty                                                                           # steps/basic_functionality/common.py:5
+    And a guest exists with email "jane.doe@example.com"                                                                                               # steps/basic_functionality/guest_and_employee_steps.py:42
+    And an employee exists with email "mario.rossi@hotel.com"                                                                                          # steps/basic_functionality/guest_and_employee_steps.py:233
+    And a room numbered 101 exists with price 100.0                                                                                                    # steps/basic_functionality/room_steps.py:37
+    And a booking exists for guest "jane.doe@example.com" in room 101 with agreed price 100.0 and no additional charges, from 2026-10-01 to 2026-10-04 # steps/behavior/booking_steps.py:65
+    And an invoice has been generated for that booking                                                                                                 # steps/behavior/booking_steps.py:215
+    When I pay that invoice                                                                                                                            # steps/behavior/booking_steps.py:269
+    Then the operation should succeed                                                                                                                  # steps/basic_functionality/common.py:10
+    And the invoice should be marked as paid                                                                                                           # steps/behavior/booking_steps.py:256
+    And the booking's status should be "confirmed"                                                                                                     # steps/behavior/booking_steps.py:185
+
+  @complex-behavior @correctness @completeness @invoice
+  Scenario: Paying an invoice that has already been paid is rejected                                                                                   # features/behavior/invoice_payment.feature:27
+    Given the hotel booking application is running and the database is empty                                                                           # steps/basic_functionality/common.py:5
+    And a guest exists with email "jane.doe@example.com"                                                                                               # steps/basic_functionality/guest_and_employee_steps.py:42
+    And an employee exists with email "mario.rossi@hotel.com"                                                                                          # steps/basic_functionality/guest_and_employee_steps.py:233
+    And a room numbered 101 exists with price 100.0                                                                                                    # steps/basic_functionality/room_steps.py:37
+    And a booking exists for guest "jane.doe@example.com" in room 101 with agreed price 100.0 and no additional charges, from 2026-10-01 to 2026-10-04 # steps/behavior/booking_steps.py:65
+    And an invoice has been generated for that booking                                                                                                 # steps/behavior/booking_steps.py:215
+    Given that invoice has already been paid                                                                                                           # steps/behavior/booking_steps.py:278
+    When I try to pay that invoice again                                                                                                               # steps/behavior/booking_steps.py:283
+    Then the operation should fail                                                                                                                     # steps/basic_functionality/common.py:14
+    And I should see an error indicating the invoice is already paid                                                                                   # steps/behavior/booking_steps.py:288
+
+4 features passed, 0 failed, 0 skipped
+14 scenarios passed, 0 failed, 0 skipped
+119 steps passed, 0 failed, 0 skipped
+Took 1min 57.277s

@@ -1,0 +1,60 @@
+{
+  "recorded": "2026-09-11T16:23:23+02:00",
+  "approach": "Pure low-code",
+  "tool": "BESSER generators",
+  "llm": "No LLM",
+  "notes": "Web app generated from the class and GUI diagrams via /generate-output-from-project on editor.besser-pearl.org; scenarios driven through the generated UI with behave + Playwright.",
+  "under_test": {
+    "version": "7.16.1",
+    "api": "http://localhost:8000",
+    "ui": "http://localhost:3000"
+  },
+  "benchmark": {
+    "commit": "b915d37",
+    "model_last_changed": "9f2dcd9 2026-09-11",
+    "dirty": false
+  },
+  "environment": {
+    "platform": "Windows-10-10.0.26100-SP0",
+    "python": "3.11.9"
+  },
+  "results": {
+    "basic_functionality": {
+      "passed": 22,
+      "failed": 1,
+      "skipped": 0,
+      "seconds": 80.496,
+      "failing_scenarios": [
+        "features/basic_functionality/booking_management.feature:57  Booking price equals sum of room agreed prices"
+      ],
+      "exit_code": 1,
+      "log": "basic_functionality.txt"
+    },
+    "constraints": {
+      "passed": 28,
+      "failed": 1,
+      "skipped": 0,
+      "seconds": 108.186,
+      "failing_scenarios": [
+        "features/constraints/booking_capacity_constraints.feature:35  Number of guests exceeding the combined capacity of multiple rooms is rejected"
+      ],
+      "exit_code": 1,
+      "log": "constraints.txt"
+    },
+    "behavior": {
+      "passed": 14,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 117.277,
+      "failing_scenarios": [],
+      "exit_code": 0,
+      "log": "behavior.txt"
+    }
+  },
+  "totals": {
+    "passed": 64,
+    "failed": 2,
+    "total": 66,
+    "seconds": 306.0
+  }
+}

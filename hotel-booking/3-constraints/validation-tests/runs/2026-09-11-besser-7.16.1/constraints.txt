@@ -1,0 +1,304 @@
+USING RUNNER: behave.runner:Runner
+Feature: Structural constraints on booking associations # features/constraints/booking_association_constraints.feature:1
+  As the system
+  I want to enforce the cardinalities defined for a booking's relationships
+  So that every booking remains a structurally valid record
+  Feature: Structural constraints on booking associations  # features/constraints/booking_association_constraints.feature:1
+
+  @constraints @correctness @completeness @booking
+  Scenario: A booking cannot be created without at least one guest                                                              # features/constraints/booking_association_constraints.feature:20
+    Given the hotel booking application is running and the database is empty                                                    # steps/basic_functionality/common.py:5
+    And a guest exists with email "jane.doe@example.com"                                                                        # steps/basic_functionality/guest_and_employee_steps.py:42
+    And an employee exists with email "mario.rossi@hotel.com"                                                                   # steps/basic_functionality/guest_and_employee_steps.py:233
+    And a room numbered 101 exists with max_people 2                                                                            # steps/constraints/booking_steps.py:41
+    When I try to create a booking with no guests, room 101, contact "jane.doe@example.com" and manager "mario.rossi@hotel.com" # steps/constraints/booking_steps.py:50
+    Then the operation should fail                                                                                              # steps/basic_functionality/common.py:14
+    And I should see an error indicating a booking must have at least one guest                                                 # steps/constraints/booking_steps.py:88
+
+  @constraints @correctness @completeness @booking
+  Scenario: A booking cannot be created without at least one room                                                                                  # features/constraints/booking_association_constraints.feature:26
+    Given the hotel booking application is running and the database is empty                                                                       # steps/basic_functionality/common.py:5
+    And a guest exists with email "jane.doe@example.com"                                                                                           # steps/basic_functionality/guest_and_employee_steps.py:42
+    And an employee exists with email "mario.rossi@hotel.com"                                                                                      # steps/basic_functionality/guest_and_employee_steps.py:233
+    And a room numbered 101 exists with max_people 2                                                                                               # steps/constraints/booking_steps.py:41
+    When I try to create a booking with guest "jane.doe@example.com", no rooms, contact "jane.doe@example.com" and manager "mario.rossi@hotel.com" # steps/constraints/booking_steps.py:60
+    Then the operation should fail                                                                                                                 # steps/basic_functionality/common.py:14
+    And I should see an error indicating a booking must have at least one room                                                                     # steps/constraints/booking_steps.py:93
+
+  @constraints @correctness @completeness @booking
+  Scenario: A booking cannot be created without a booking contact                                                                      # features/constraints/booking_association_constraints.feature:32
+    Given the hotel booking application is running and the database is empty                                                           # steps/basic_functionality/common.py:5
+    And a guest exists with email "jane.doe@example.com"                                                                               # steps/basic_functionality/guest_and_employee_steps.py:42
+    And an employee exists with email "mario.rossi@hotel.com"                                                                          # steps/basic_functionality/guest_and_employee_steps.py:233
+    And a room numbered 101 exists with max_people 2                                                                                   # steps/constraints/booking_steps.py:41
+    When I try to create a booking with guest "jane.doe@example.com", room 101, no booking contact and manager "mario.rossi@hotel.com" # steps/constraints/booking_steps.py:68
+    Then the operation should fail                                                                                                     # steps/basic_functionality/common.py:14
+    And I should see an error indicating a booking contact is required                                                                 # steps/constraints/booking_steps.py:98
+
+  @constraints @correctness @completeness @booking
+  Scenario: A booking cannot be created without a managing employee                                                           # features/constraints/booking_association_constraints.feature:38
+    Given the hotel booking application is running and the database is empty                                                  # steps/basic_functionality/common.py:5
+    And a guest exists with email "jane.doe@example.com"                                                                      # steps/basic_functionality/guest_and_employee_steps.py:42
+    And an employee exists with email "mario.rossi@hotel.com"                                                                 # steps/basic_functionality/guest_and_employee_steps.py:233
+    And a room numbered 101 exists with max_people 2                                                                          # steps/constraints/booking_steps.py:41
+    When I try to create a booking with guest "jane.doe@example.com", room 101, contact "jane.doe@example.com" and no manager # steps/constraints/booking_steps.py:78
+    Then the operation should fail                                                                                            # steps/basic_functionality/common.py:14
+    And I should see an error indicating a managing employee is required                                                      # steps/constraints/booking_steps.py:103
+
+  @constraints @correctness @completeness @booking @invoice
+  Scenario: A booking cannot have more than one invoice                      # features/constraints/booking_association_constraints.feature:44
+    Given the hotel booking application is running and the database is empty # steps/basic_functionality/common.py:5
+    And a guest exists with email "jane.doe@example.com"                     # steps/basic_functionality/guest_and_employee_steps.py:42
+    And an employee exists with email "mario.rossi@hotel.com"                # steps/basic_functionality/guest_and_employee_steps.py:233
+    And a room numbered 101 exists with max_people 2                         # steps/constraints/booking_steps.py:41
+    Given a booking exists with an invoice                                   # steps/constraints/booking_steps.py:116
+    When I try to generate a second invoice for that booking                 # steps/constraints/booking_steps.py:132
+    Then the operation should fail                                           # steps/basic_functionality/common.py:14
+    And I should see an error indicating the booking already has an invoice  # steps/constraints/booking_steps.py:139
+
+  @constraints @correctness @completeness @room @booking
+  Scenario: The same room can be part of more than one booking                                               # features/constraints/booking_association_constraints.feature:51
+    Given the hotel booking application is running and the database is empty                                 # steps/basic_functionality/common.py:5
+    And a guest exists with email "jane.doe@example.com"                                                     # steps/basic_functionality/guest_and_employee_steps.py:42
+    And an employee exists with email "mario.rossi@hotel.com"                                                # steps/basic_functionality/guest_and_employee_steps.py:233
+    And a room numbered 101 exists with max_people 2                                                         # steps/constraints/booking_steps.py:41
+    Given a booking exists for guest "jane.doe@example.com" in room 101 from 2026-10-01 to 2026-10-05        # steps/basic_functionality/booking_steps.py:56
+    When I create another booking for guest "jane.doe@example.com" in room 101 from 2026-11-01 to 2026-11-05 # steps/constraints/booking_steps.py:149
+    Then the operation should succeed                                                                        # steps/basic_functionality/common.py:10
+    And room 101 should be part of 2 bookings                                                                # steps/constraints/booking_steps.py:159
+
+  @constraints @correctness @completeness @room
+  Scenario: A room can exist without being part of any booking               # features/constraints/booking_association_constraints.feature:58
+    Given the hotel booking application is running and the database is empty # steps/basic_functionality/common.py:5
+    And a guest exists with email "jane.doe@example.com"                     # steps/basic_functionality/guest_and_employee_steps.py:42
+    And an employee exists with email "mario.rossi@hotel.com"                # steps/basic_functionality/guest_and_employee_steps.py:233
+    And a room numbered 101 exists with max_people 2                         # steps/constraints/booking_steps.py:41
+    When I create a room with the following details:                         # steps/basic_functionality/room_steps.py:55
+      | number | max_people | description | price |
+      | 104    | 2          | Single room | 70.0  |
+    Then the operation should succeed                                        # steps/basic_functionality/common.py:10
+    And room 104 should be part of 0 bookings                                # steps/constraints/booking_steps.py:159
+
+Feature: Booking occupancy does not exceed room capacity # features/constraints/booking_capacity_constraints.feature:1
+  As the system
+  I want to guarantee that the number of guests in a booking never exceeds
+  the combined maximum occupancy of the rooms reserved in that booking
+  So that rooms are never overbooked beyond their capacity
+  Feature: Booking occupancy does not exceed room capacity  # features/constraints/booking_capacity_constraints.feature:1
+
+  @constraints @correctness @completeness @booking
+  Scenario: Number of guests exactly equal to a single room's capacity is accepted               # features/constraints/booking_capacity_constraints.feature:25
+    Given the hotel booking application is running and the database is empty                     # steps/basic_functionality/common.py:5
+    And a room numbered 101 exists with max_people 2                                             # steps/constraints/booking_steps.py:41
+    And a room numbered 102 exists with max_people 3                                             # steps/constraints/booking_steps.py:41
+    And the following guests exist:                                                              # steps/basic_functionality/guest_and_employee_steps.py:52
+      | email              |
+      | guest1@example.com |
+      | guest2@example.com |
+      | guest3@example.com |
+      | guest4@example.com |
+      | guest5@example.com |
+      | guest6@example.com |
+    When I create a booking with rooms "101" and guests "guest1@example.com, guest2@example.com" # steps/constraints/booking_steps.py:169
+    Then the operation should succeed                                                            # steps/basic_functionality/common.py:10
+
+  @constraints @correctness @completeness @booking
+  Scenario: Number of guests exactly equal to the combined capacity of multiple rooms is accepted                                                                 # features/constraints/booking_capacity_constraints.feature:30
+    Given the hotel booking application is running and the database is empty                                                                                      # steps/basic_functionality/common.py:5
+    And a room numbered 101 exists with max_people 2                                                                                                              # steps/constraints/booking_steps.py:41
+    And a room numbered 102 exists with max_people 3                                                                                                              # steps/constraints/booking_steps.py:41
+    And the following guests exist:                                                                                                                               # steps/basic_functionality/guest_and_employee_steps.py:52
+      | email              |
+      | guest1@example.com |
+      | guest2@example.com |
+      | guest3@example.com |
+      | guest4@example.com |
+      | guest5@example.com |
+      | guest6@example.com |
+    When I create a booking with rooms "101, 102" and guests "guest1@example.com, guest2@example.com, guest3@example.com, guest4@example.com, guest5@example.com" # steps/constraints/booking_steps.py:169
+    Then the operation should succeed                                                                                                                             # steps/basic_functionality/common.py:10
+
+  @constraints @correctness @completeness @booking
+  Scenario: Number of guests exceeding the combined capacity of multiple rooms is rejected                                                                                            # features/constraints/booking_capacity_constraints.feature:35
+    Given the hotel booking application is running and the database is empty                                                                                                          # steps/basic_functionality/common.py:5
+    And a room numbered 101 exists with max_people 2                                                                                                                                  # steps/constraints/booking_steps.py:41
+    And a room numbered 102 exists with max_people 3                                                                                                                                  # steps/constraints/booking_steps.py:41
+    And the following guests exist:                                                                                                                                                   # steps/basic_functionality/guest_and_employee_steps.py:52
+      | email              |
+      | guest1@example.com |
+      | guest2@example.com |
+      | guest3@example.com |
+      | guest4@example.com |
+      | guest5@example.com |
+      | guest6@example.com |
+    When I create a booking with rooms "101, 102" and guests "guest1@example.com, guest2@example.com, guest3@example.com, guest4@example.com, guest5@example.com, guest6@example.com" # steps/constraints/booking_steps.py:169
+    Then the operation should fail                                                                                                                                                    # steps/basic_functionality/common.py:14
+      ASSERT FAILED: Expected operation to fail but it succeeded
+
+    And I should see an error indicating the number of guests exceeds room capacity                                                                                                   # None
+
+  @constraints @correctness @completeness @booking
+  Scenario: Adding an extra room to a booking increases its allowed guest capacity             # features/constraints/booking_capacity_constraints.feature:41
+    Given the hotel booking application is running and the database is empty                   # steps/basic_functionality/common.py:5
+    And a room numbered 101 exists with max_people 2                                           # steps/constraints/booking_steps.py:41
+    And a room numbered 102 exists with max_people 3                                           # steps/constraints/booking_steps.py:41
+    And the following guests exist:                                                            # steps/basic_functionality/guest_and_employee_steps.py:52
+      | email              |
+      | guest1@example.com |
+      | guest2@example.com |
+      | guest3@example.com |
+      | guest4@example.com |
+      | guest5@example.com |
+      | guest6@example.com |
+    Given a booking exists with room "101" and guests "guest1@example.com, guest2@example.com" # steps/constraints/booking_steps.py:186
+    When I add room "102" to that booking                                                      # steps/constraints/booking_steps.py:193
+    And I add guest "guest3@example.com" to that booking                                       # steps/constraints/booking_steps.py:201
+    Then the operation should succeed                                                          # steps/basic_functionality/common.py:10
+
+Feature: Booking check-in and check-out date consistency # features/constraints/booking_date_constraints.feature:1
+  As the system
+  I want to guarantee that a booking's check-in date is never after its check-out date
+  So that stays always represent a valid time interval
+  Feature: Booking check-in and check-out date consistency  # features/constraints/booking_date_constraints.feature:1
+
+  @constraints @correctness @completeness @booking
+  Scenario: Check-in date before check-out date is accepted                                                                          # features/constraints/booking_date_constraints.feature:15
+    Given the hotel booking application is running and the database is empty                                                         # steps/basic_functionality/common.py:5
+    And a guest exists with email "jane.doe@example.com"                                                                             # steps/basic_functionality/guest_and_employee_steps.py:42
+    And a room numbered 101 exists with max_people 2                                                                                 # steps/constraints/booking_steps.py:41
+    When I create a booking for guest "jane.doe@example.com" in room 101 with check-in date 2026-10-01 and check-out date 2026-10-05 # steps/constraints/booking_steps.py:225
+    Then the operation should succeed                                                                                                # steps/basic_functionality/common.py:10
+
+  @constraints @correctness @completeness @booking
+  Scenario: Check-in date equal to check-out date is accepted                                                                        # features/constraints/booking_date_constraints.feature:20
+    Given the hotel booking application is running and the database is empty                                                         # steps/basic_functionality/common.py:5
+    And a guest exists with email "jane.doe@example.com"                                                                             # steps/basic_functionality/guest_and_employee_steps.py:42
+    And a room numbered 101 exists with max_people 2                                                                                 # steps/constraints/booking_steps.py:41
+    When I create a booking for guest "jane.doe@example.com" in room 101 with check-in date 2026-10-01 and check-out date 2026-10-01 # steps/constraints/booking_steps.py:225
+    Then the operation should succeed                                                                                                # steps/basic_functionality/common.py:10
+
+  @constraints @correctness @completeness @booking
+  Scenario: Check-in date after check-out date is rejected                                                                           # features/constraints/booking_date_constraints.feature:25
+    Given the hotel booking application is running and the database is empty                                                         # steps/basic_functionality/common.py:5
+    And a guest exists with email "jane.doe@example.com"                                                                             # steps/basic_functionality/guest_and_employee_steps.py:42
+    And a room numbered 101 exists with max_people 2                                                                                 # steps/constraints/booking_steps.py:41
+    When I create a booking for guest "jane.doe@example.com" in room 101 with check-in date 2026-10-05 and check-out date 2026-10-01 # steps/constraints/booking_steps.py:225
+    Then the operation should fail                                                                                                   # steps/basic_functionality/common.py:14
+    And I should see an error indicating the check-in date must not be after the check-out date                                      # steps/constraints/booking_steps.py:244
+
+  @constraints @correctness @completeness @booking
+  Scenario: Updating a booking so its check-in date becomes after its check-out date is rejected      # features/constraints/booking_date_constraints.feature:31
+    Given the hotel booking application is running and the database is empty                          # steps/basic_functionality/common.py:5
+    And a guest exists with email "jane.doe@example.com"                                              # steps/basic_functionality/guest_and_employee_steps.py:42
+    And a room numbered 101 exists with max_people 2                                                  # steps/constraints/booking_steps.py:41
+    Given a booking exists for guest "jane.doe@example.com" in room 101 from 2026-10-01 to 2026-10-05 # steps/basic_functionality/booking_steps.py:56
+    When I update that booking's check-in date to 2026-10-06                                          # steps/constraints/booking_steps.py:235
+    Then the operation should fail                                                                    # steps/basic_functionality/common.py:14
+    And I should see an error indicating the check-in date must not be after the check-out date       # steps/constraints/booking_steps.py:244
+
+Feature: Contact information validation for people # features/constraints/person_contact_validation.feature:1
+  As the system
+  I want to enforce that guests and employees have valid contact details
+  So that the hotel can reliably reach the people it deals with
+  Feature: Contact information validation for people  # features/constraints/person_contact_validation.feature:1
+
+  @constraints @correctness @completeness @person
+  Scenario Outline: Rejecting invalid email addresses -- @1.1                # features/constraints/person_contact_validation.feature:23
+    Given the hotel booking application is running and the database is empty # steps/basic_functionality/common.py:5
+    When I try to create a "guest" with email "not-an-email"                 # steps/constraints/person_steps.py:42
+    Then the operation should fail                                           # steps/basic_functionality/common.py:14
+    And I should see an error indicating the email is invalid                # steps/constraints/person_steps.py:58
+
+  @constraints @correctness @completeness @person
+  Scenario Outline: Rejecting invalid email addresses -- @1.2                # features/constraints/person_contact_validation.feature:24
+    Given the hotel booking application is running and the database is empty # steps/basic_functionality/common.py:5
+    When I try to create a "guest" with email "missing-at-sign.com"          # steps/constraints/person_steps.py:42
+    Then the operation should fail                                           # steps/basic_functionality/common.py:14
+    And I should see an error indicating the email is invalid                # steps/constraints/person_steps.py:58
+
+  @constraints @correctness @completeness @person
+  Scenario Outline: Rejecting invalid email addresses -- @1.3                # features/constraints/person_contact_validation.feature:25
+    Given the hotel booking application is running and the database is empty # steps/basic_functionality/common.py:5
+    When I try to create a "guest" with email "@missingusername.com"         # steps/constraints/person_steps.py:42
+    Then the operation should fail                                           # steps/basic_functionality/common.py:14
+    And I should see an error indicating the email is invalid                # steps/constraints/person_steps.py:58
+
+  @constraints @correctness @completeness @person
+  Scenario Outline: Rejecting invalid email addresses -- @1.4                # features/constraints/person_contact_validation.feature:26
+    Given the hotel booking application is running and the database is empty # steps/basic_functionality/common.py:5
+    When I try to create a "guest" with email "spaces in@email.com"          # steps/constraints/person_steps.py:42
+    Then the operation should fail                                           # steps/basic_functionality/common.py:14
+    And I should see an error indicating the email is invalid                # steps/constraints/person_steps.py:58
+
+  @constraints @correctness @completeness @person
+  Scenario Outline: Rejecting invalid email addresses -- @1.5                # features/constraints/person_contact_validation.feature:27
+    Given the hotel booking application is running and the database is empty # steps/basic_functionality/common.py:5
+    When I try to create a "employee" with email "no-domain@"                # steps/constraints/person_steps.py:42
+    Then the operation should fail                                           # steps/basic_functionality/common.py:14
+    And I should see an error indicating the email is invalid                # steps/constraints/person_steps.py:58
+
+  @constraints @correctness @completeness @person
+  Scenario Outline: Accepting valid email addresses -- @1.1                  # features/constraints/person_contact_validation.feature:36
+    Given the hotel booking application is running and the database is empty # steps/basic_functionality/common.py:5
+    When I try to create a "guest" with email "jane.doe@example.com"         # steps/constraints/person_steps.py:42
+    Then the operation should succeed                                        # steps/basic_functionality/common.py:10
+
+  @constraints @correctness @completeness @person
+  Scenario Outline: Accepting valid email addresses -- @1.2                  # features/constraints/person_contact_validation.feature:37
+    Given the hotel booking application is running and the database is empty # steps/basic_functionality/common.py:5
+    When I try to create a "guest" with email "j.doe+bookings@example.co"    # steps/constraints/person_steps.py:42
+    Then the operation should succeed                                        # steps/basic_functionality/common.py:10
+
+  @constraints @correctness @completeness @person
+  Scenario Outline: Accepting valid email addresses -- @1.3                  # features/constraints/person_contact_validation.feature:38
+    Given the hotel booking application is running and the database is empty # steps/basic_functionality/common.py:5
+    When I try to create a "employee" with email "mario.rossi@hotel.com"     # steps/constraints/person_steps.py:42
+    Then the operation should succeed                                        # steps/basic_functionality/common.py:10
+
+  @constraints @correctness @completeness @person
+  Scenario Outline: Rejecting invalid phone numbers -- @1.1                  # features/constraints/person_contact_validation.feature:48
+    Given the hotel booking application is running and the database is empty # steps/basic_functionality/common.py:5
+    When I try to create a "guest" with phone number "12345"                 # steps/constraints/person_steps.py:48
+    Then the operation should fail                                           # steps/basic_functionality/common.py:14
+    And I should see an error indicating the phone number is invalid         # steps/constraints/person_steps.py:66
+
+  @constraints @correctness @completeness @person
+  Scenario Outline: Rejecting invalid phone numbers -- @1.2                  # features/constraints/person_contact_validation.feature:49
+    Given the hotel booking application is running and the database is empty # steps/basic_functionality/common.py:5
+    When I try to create a "guest" with phone number "abcdefghij"            # steps/constraints/person_steps.py:48
+    Then the operation should fail                                           # steps/basic_functionality/common.py:14
+    And I should see an error indicating the phone number is invalid         # steps/constraints/person_steps.py:66
+
+  @constraints @correctness @completeness @person
+  Scenario Outline: Rejecting invalid phone numbers -- @1.3                  # features/constraints/person_contact_validation.feature:50
+    Given the hotel booking application is running and the database is empty # steps/basic_functionality/common.py:5
+    When I try to create a "employee" with phone number "+1-555-123-456"     # steps/constraints/person_steps.py:48
+    Then the operation should fail                                           # steps/basic_functionality/common.py:14
+    And I should see an error indicating the phone number is invalid         # steps/constraints/person_steps.py:66
+
+  @constraints @correctness @completeness @person
+  Scenario Outline: Accepting valid phone numbers -- @1.1                    # features/constraints/person_contact_validation.feature:59
+    Given the hotel booking application is running and the database is empty # steps/basic_functionality/common.py:5
+    When I try to create a "guest" with phone number "+15551234567"          # steps/constraints/person_steps.py:48
+    Then the operation should succeed                                        # steps/basic_functionality/common.py:10
+
+  @constraints @correctness @completeness @person
+  Scenario Outline: Accepting valid phone numbers -- @1.2                    # features/constraints/person_contact_validation.feature:60
+    Given the hotel booking application is running and the database is empty # steps/basic_functionality/common.py:5
+    When I try to create a "guest" with phone number "5551234567"            # steps/constraints/person_steps.py:48
+    Then the operation should succeed                                        # steps/basic_functionality/common.py:10
+
+  @constraints @correctness @completeness @person
+  Scenario Outline: Accepting valid phone numbers -- @1.3                    # features/constraints/person_contact_validation.feature:61
+    Given the hotel booking application is running and the database is empty # steps/basic_functionality/common.py:5
+    When I try to create a "employee" with phone number "+447911123456"      # steps/constraints/person_steps.py:48
+    Then the operation should succeed                                        # steps/basic_functionality/common.py:10
+
+
+Failing scenarios:
+  features/constraints/booking_capacity_constraints.feature:35  Number of guests exceeding the combined capacity of multiple rooms is rejected
+
+3 features passed, 1 failed, 0 skipped
+28 scenarios passed, 1 failed, 0 skipped
+149 steps passed, 1 failed, 1 skipped
+Took 1min 48.186s
