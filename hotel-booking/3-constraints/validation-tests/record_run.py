@@ -44,6 +44,26 @@ def git(*args: str, cwd: Path) -> str:
         return "unknown"
 
 
+def working_tree_dirty(runs_dir: Path) -> bool:
+    """Whether anything outside the recorded runs is uncommitted.
+
+    Recording writes its own logs, which makes the tree dirty by definition, so
+    the run directory is excluded - otherwise every run would flag itself as
+    unreproducible and the flag would say nothing.
+    """
+    status = git("status", "--porcelain", cwd=HERE)
+    if status == "unknown":
+        return False
+    marker = runs_dir.name
+    changed = []
+    for line in status.splitlines():
+        path = line[3:].strip().strip('"')
+        if marker in path:
+            continue
+        changed.append(path)
+    return bool(changed)
+
+
 def run_folder(folder: str, out_dir: Path) -> dict:
     """Run one feature folder, store its output verbatim, return what it said."""
     proc = subprocess.run(
@@ -88,6 +108,9 @@ def main() -> None:
     out_dir = HERE / "runs" / f"{stamp}-{args.label}"
     out_dir.mkdir(parents=True, exist_ok=True)
 
+    # Measured before the run writes anything of its own.
+    dirty_before_run = working_tree_dirty(out_dir)
+
     results = {folder: run_folder(folder, out_dir) for folder in FOLDERS}
     counted = [r for r in results.values() if r["passed"] is not None]
 
@@ -107,7 +130,7 @@ def main() -> None:
             "model_last_changed": git(
                 "log", "-1", "--format=%h %ad", "--date=short", "--",
                 "../low-code-model/model.json", cwd=HERE),
-            "dirty": git("status", "--porcelain", cwd=HERE) != "",
+            "dirty": dirty_before_run,
         },
         "environment": {
             "platform": platform.platform(),
