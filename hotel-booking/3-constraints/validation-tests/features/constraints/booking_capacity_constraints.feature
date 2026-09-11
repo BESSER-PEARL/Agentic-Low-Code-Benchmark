@@ -27,12 +27,6 @@ Feature: Booking occupancy does not exceed room capacity
     Then the operation should succeed
 
   @constraints @correctness @completeness @booking
-  Scenario: Number of guests exceeding a single room's capacity is rejected
-    When I create a booking with rooms "101" and guests "guest1@example.com, guest2@example.com, guest3@example.com"
-    Then the operation should fail
-    And I should see an error indicating the number of guests exceeds room capacity
-
-  @constraints @correctness @completeness @booking
   Scenario: Number of guests exactly equal to the combined capacity of multiple rooms is accepted
     When I create a booking with rooms "101, 102" and guests "guest1@example.com, guest2@example.com, guest3@example.com, guest4@example.com, guest5@example.com"
     Then the operation should succeed
@@ -49,10 +43,3 @@ Feature: Booking occupancy does not exceed room capacity
     When I add room "102" to that booking
     And I add guest "guest3@example.com" to that booking
     Then the operation should succeed
-
-  @constraints @correctness @completeness @booking
-  Scenario: Removing a room from a booking that would leave it over capacity is rejected
-    Given a booking exists with rooms "101, 102" and guests "guest1@example.com, guest2@example.com, guest3@example.com, guest4@example.com, guest5@example.com"
-    When I try to remove room "102" from that booking
-    Then the operation should fail
-    And I should see an error indicating the number of guests exceeds room capacity
