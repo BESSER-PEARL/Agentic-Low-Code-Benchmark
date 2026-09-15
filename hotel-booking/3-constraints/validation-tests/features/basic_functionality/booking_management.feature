@@ -58,4 +58,4 @@ Feature: Booking management
     When I create a booking with the following details:
       | check_in   | check_out  | booking_contact       | guests                | rooms | rooms_agreed_prices | managed_by             |
       | 2026-11-01 | 2026-11-05 | jane.doe@example.com  | jane.doe@example.com  | 101   | 1000                | mario.rossi@hotel.com  |
-    Then the booking price should be 1000.0
+    Then the booking price should be 4000.0
