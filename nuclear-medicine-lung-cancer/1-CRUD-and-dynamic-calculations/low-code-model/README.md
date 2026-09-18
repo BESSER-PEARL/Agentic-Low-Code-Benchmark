@@ -18,4 +18,4 @@ The `Patient` side of the model stores relevant clinical background. A `Clinical
 
 1. Go to [BESSER Web Editor](https://editor.besser-pearl.org/)
 2. Create a new Project
-3. Import [Nuclear_Medicine_for_Lung_Cancer.json](Nuclear_Medicine_for_Lung_Cancer.json)
+3. Import [Nuclear_Medicine_for_Lung_Cancer.json](model.json)

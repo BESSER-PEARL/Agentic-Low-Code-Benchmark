@@ -10,50 +10,44 @@ The benchmark evaluates how these approaches perform when developing application
 
 ## Repository Structure
 
-The repository contains two case studies. Each case study is organized into six requirement categories:
+The repository contains two case studies. Each case study is organized into five requirement categories:
 
 ```text
 .
 ├── README.md
 │
 ├── hotel-booking/
-│   ├── crud/
+│   ├── 1-CRUD-and-dynamic-calculations/
 │   │   ├── nl-requirements/
 │   │   ├── validation-tests/
 │   │   └── low-code-model/
 │   │
-│   ├── constraints/
+│   ├── 2-validation-and-business-rules/
 │   │   ├── nl-requirements/
 │   │   ├── validation-tests/
 │   │   └── low-code-model/
 │   │
-│   ├── complex-behaviour/
+│   ├── 3-edge-cases/
 │   │   ├── nl-requirements/
 │   │   ├── validation-tests/
 │   │   └── low-code-model/
 │   │
-│   ├── edge-cases/
+│   ├── 4-non-functional/
 │   │   ├── nl-requirements/
 │   │   ├── validation-tests/
 │   │   └── low-code-model/
 │   │
-│   ├── conflicting/
-│   │   ├── nl-requirements/
-│   │   ├── validation-tests/
-│   │   └── low-code-model/
-│   │
-│   └── non-functional/
+│   └── 5-defective/
 │       ├── nl-requirements/
 │       ├── validation-tests/
 │       └── low-code-model/
 │
 └── nuclear-medicine-lung-cancer/
-    ├── crud/
-    ├── constraints/
-    ├── complex-behaviour/
-    ├── edge-cases/
-    ├── conflicting/
-    └── non-functional/
+    ├── 1-CRUD-and-dynamic-calculations/
+    ├── 2-validation-and-business-rules/
+    ├── 3-edge-cases/
+    ├── 4-non-functional/
+    └── 5-defective/
 ```
 
 Each requirement category contains three types of artifacts:
@@ -66,38 +60,32 @@ Each requirement category contains three types of artifacts:
 
 The benchmark progressively introduces different types of requirements and challenges.
 
-### 1. CRUD — Basic Requirements
+### 1. CRUD Baseline with Dynamic Calculations
 
-A simple CRUD application covering the core functionality of the case study.
+A simple data-centric application description (creating, reading, updating, and deleting), including derived or computed values (e.g., automatically updating a project's budget allocation when a sub-item changes).
 
-This category establishes the basic functionality required to implement the application, including the creation, retrieval, modification, and deletion of the main domain entities.
+This category establishes the basic functionality required to implement the application, including the creation, retrieval, modification, and deletion of the main domain entities, together with the dynamic calculations whose behavior depends on application data, relationships, or runtime conditions.
 
-### 2. Constraints — Validation and Business Rules
+### 2. Validation and Business Rules
 
-The basic application is extended with additional validation constraints and domain-specific business rules.
+Requirements expressing semantic constraints across attributes or entities (e.g., an allocation cannot exceed the remaining budget), which stress the expressiveness of a platform's constraint language.
 
 These requirements introduce conditions that must be satisfied by the application beyond basic CRUD functionality.
 
-### 3. Complex Behaviour — Dynamic Calculations
+### 3. Unconventional Requirements and Edge Cases
 
-Requirements involving more complex dynamic calculations are introduced.
-
-This category evaluates the ability of the development approaches to implement functionality whose behavior depends on application data, relationships, or runtime conditions.
-
-### 4. Edge Cases — Unconventional and Edge Cases
-
-Requirements include unusual and edge-case scenarios that may be counterintuitive for agentic models.
+Requirements describing atypical or boundary scenarios that can be counter-intuitive for agentic models to infer correctly without explicit guidance, and that are not always anticipated by a platform's default generators.
 
 This category focuses on less common situations and requirements that may challenge the ability of automated development approaches to correctly interpret and implement the specification.
 
-### 5. Conflicting — Defective Requirements
+### 4. Non-Functional Requirements
 
-The requirements contain inconsistencies, omissions, and conflicts, resulting in potential goal conflicts.
-
-This category evaluates how the different development approaches handle requirements that are not fully consistent or that may admit conflicting interpretations.
-
-### 6. Non-Functional Requirements
-
-Additional requirements address aspects such as style, colors, accessibility, and multilingual support.
+Requirements concerning style, color scheme, accessibility, multi-language support, and similar cross-cutting qualities, which are typically outside the scope of deterministic low-code generation.
 
 This category evaluates requirements that concern qualities and characteristics of the application beyond its core functional behavior.
+
+### 5. Defective Requirements
+
+Specifications deliberately containing an inconsistent, incomplete, or conflicting requirement, representing the most challenging condition and the one most likely to expose differences in how each approach handles ambiguity or contradiction.
+
+This category evaluates how the different development approaches handle requirements that are not fully consistent or that may admit conflicting interpretations.
