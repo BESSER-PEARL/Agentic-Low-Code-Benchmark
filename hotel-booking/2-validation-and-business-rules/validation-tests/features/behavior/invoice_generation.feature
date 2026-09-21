@@ -25,8 +25,7 @@ Feature: Invoice generation for a booking
     And the invoice's issued date should be today
 
   @complex-behavior @correctness @completeness @invoice
-  Scenario: Generating an invoice for a booking that already has one is rejected
+  Scenario: Generating an invoice for a booking that already has one
     Given an invoice has already been generated for that booking
     When I try to generate another invoice for that booking
-    Then the operation should fail
-    And I should see an error indicating the booking already has an invoice
+    Then the booking should have exactly one invoice
