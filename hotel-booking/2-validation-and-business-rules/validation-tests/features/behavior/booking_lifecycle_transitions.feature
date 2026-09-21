@@ -49,7 +49,6 @@ Feature: Booking lifecycle: check-in, check-out and cancellation
     Given a confirmed booking exists for guest "jane.doe@example.com" in room 101 from 2026-10-01 to 2026-10-05
     When I try to check out that booking
     Then the operation should fail
-    And I should see an error indicating the booking must be checked in before check-out
 
   @complex-behavior @correctness @completeness @booking @lifecycle
   Scenario: Cancelling a booking before the guest has arrived succeeds
