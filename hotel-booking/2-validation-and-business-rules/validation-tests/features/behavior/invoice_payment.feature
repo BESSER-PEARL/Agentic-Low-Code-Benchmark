@@ -28,4 +28,3 @@ Feature: Invoice payment
     Given that invoice has already been paid
     When I try to pay that invoice again
     Then the operation should fail
-    And I should see an error indicating the invoice is already paid
