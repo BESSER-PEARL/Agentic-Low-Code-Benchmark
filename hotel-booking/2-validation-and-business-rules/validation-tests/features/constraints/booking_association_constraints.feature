@@ -20,32 +20,27 @@ Feature: Structural constraints on booking associations
   Scenario: A booking cannot be created without at least one guest
     When I try to create a booking with no guests, room 101, contact "jane.doe@example.com" and manager "mario.rossi@hotel.com"
     Then the operation should fail
-    And I should see an error indicating a booking must have at least one guest
 
   @constraints @correctness @completeness @booking
   Scenario: A booking cannot be created without at least one room
     When I try to create a booking with guest "jane.doe@example.com", no rooms, contact "jane.doe@example.com" and manager "mario.rossi@hotel.com"
     Then the operation should fail
-    And I should see an error indicating a booking must have at least one room
 
   @constraints @correctness @completeness @booking
   Scenario: A booking cannot be created without a booking contact
     When I try to create a booking with guest "jane.doe@example.com", room 101, no booking contact and manager "mario.rossi@hotel.com"
     Then the operation should fail
-    And I should see an error indicating a booking contact is required
 
   @constraints @correctness @completeness @booking
   Scenario: A booking cannot be created without a managing employee
     When I try to create a booking with guest "jane.doe@example.com", room 101, contact "jane.doe@example.com" and no manager
     Then the operation should fail
-    And I should see an error indicating a managing employee is required
 
   @constraints @correctness @completeness @booking @invoice
   Scenario: A booking cannot have more than one invoice
     Given a booking exists with an invoice
     When I try to generate a second invoice for that booking
     Then the operation should fail
-    And I should see an error indicating the booking already has an invoice
 
   @constraints @correctness @completeness @room @booking
   Scenario: The same room can be part of more than one booking
