@@ -14,6 +14,18 @@ An `Exploration` can reveal one or more `Finding`s, representing relevant observ
 
 The `Patient` side of the model stores relevant clinical background. A `ClinicalAntecedent` represents comorbidities or risk factors, such as diabetes or smoking history.
 
+## Dynamic Calculations
+
+Some values are not entered by the user but calculated by the application. They are modeled as derived attributes, together with the methods that compute them:
+
+| Class | Derived attribute | Method | Behavior |
+|---|---|---|---|
+| `Exploration` | `patientAge: int` | `calculatePatientAge(): int` | Number of full years between the patient's `birthDate` and the exploration's `explorationDate`. |
+| `Exploration` | `numberOfFindings: int` (default `0`) | `countFindings(): int` | Number of `Finding`s revealed by the exploration. |
+| `Report` | `status: ReportStatus` (default `draft`) | `signReport(): bool` | Refused (`False`) if the report is already signed or has no `conclusion` or `sign`; otherwise sets `status` to `signed` and `endDate` to today, and returns `True`. |
+
+The `ReportStatus` enumeration has two literals: `draft` and `signed`.
+
 ## Opening the Project
 
 1. Go to [BESSER Web Editor](https://editor.besser-pearl.org/)

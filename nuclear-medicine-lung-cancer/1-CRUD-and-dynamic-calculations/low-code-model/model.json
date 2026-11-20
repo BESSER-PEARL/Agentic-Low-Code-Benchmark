@@ -464,7 +464,7 @@
                   "x": -5298.512446454182,
                   "y": -2262,
                   "width": 220,
-                  "height": 265
+                  "height": 365
                 },
                 "attributes": [
                   "attr_ti0zwe28f_mtilcayx_2ko",
@@ -475,13 +475,18 @@
                   "attr_u6k54z05f_mtilcayx_cdq",
                   "attr_txpf9q0ep_mtilcayx_uqv",
                   "attr_i1dlvfteu_mtilcayx_f1w",
-                  "attr_v2sn05s6v_mtilcayx_3xe"
+                  "attr_v2sn05s6v_mtilcayx_3xe",
+                  "bcb694d7-6f82-4e25-ae46-4bde66b9ee2c",
+                  "5197d320-0788-4639-b90f-c687fe095b5c"
                 ],
-                "methods": []
+                "methods": [
+                  "b31c526e-c00a-4acd-9528-023207a8237e",
+                  "0697498c-2ca9-4f8b-9678-d5964066b845"
+                ]
               },
               "attr_ti0zwe28f_mtilcayx_2ko": {
                 "id": "attr_ti0zwe28f_mtilcayx_2ko",
-                "name": "date",
+                "name": "explorationDate",
                 "type": "ClassAttribute",
                 "owner": "class_7njursmwf_mtilcayw_zv9",
                 "bounds": {
@@ -696,7 +701,7 @@
               },
               "attr_paxw0z8vv_mtilcayx_ria": {
                 "id": "attr_paxw0z8vv_mtilcayx_ria",
-                "name": "date",
+                "name": "stagingDate",
                 "type": "ClassAttribute",
                 "owner": "class_72rjupbq4_mtilcayx_myr",
                 "bounds": {
@@ -1244,15 +1249,18 @@
                   "x": -4899.444444444444,
                   "y": -2142.5,
                   "width": 220,
-                  "height": 140
+                  "height": 190
                 },
                 "attributes": [
                   "attr_2sf01dnov_mtilcayx_76a",
                   "attr_pqdt3jp78_mtilcayx_svh",
                   "attr_q7vj48j7m_mtilcayx_bpn",
-                  "attr_ha21mp941_mtilcayx_sl2"
+                  "attr_ha21mp941_mtilcayx_sl2",
+                  "6c9842a5-3edf-484a-8739-79ee8b60b038"
                 ],
-                "methods": []
+                "methods": [
+                  "0b24f37d-cb6f-4dda-933f-91fcd8b0aec5"
+                ]
               },
               "attr_2sf01dnov_mtilcayx_76a": {
                 "id": "attr_2sf01dnov_mtilcayx_76a",
@@ -1572,6 +1580,201 @@
                 "visibility": "public",
                 "attributeType": "str",
                 "implementationType": "none",
+                "stateMachineId": "",
+                "quantumCircuitId": "",
+                "isOptional": false,
+                "isDerived": false,
+                "isId": false,
+                "isExternalId": false
+              },
+              "285e9e19-ba7e-49f0-98cc-4ec219dc57c8": {
+                "id": "285e9e19-ba7e-49f0-98cc-4ec219dc57c8",
+                "name": "ReportStatus",
+                "type": "Enumeration",
+                "owner": null,
+                "bounds": {
+                  "x": -4520,
+                  "y": -1985,
+                  "width": 160,
+                  "height": 100
+                },
+                "attributes": [
+                  "8f84d631-16ea-42c5-aead-9fe7ff9475f6",
+                  "51ac0454-9b8e-43dd-acee-d226a390fba7"
+                ],
+                "methods": []
+              },
+              "8f84d631-16ea-42c5-aead-9fe7ff9475f6": {
+                "id": "8f84d631-16ea-42c5-aead-9fe7ff9475f6",
+                "name": "draft",
+                "type": "ClassAttribute",
+                "owner": "285e9e19-ba7e-49f0-98cc-4ec219dc57c8",
+                "bounds": {
+                  "x": -4519.5,
+                  "y": -1944.5,
+                  "width": 159,
+                  "height": 30
+                },
+                "code": "",
+                "visibility": "public",
+                "attributeType": "str",
+                "implementationType": "none",
+                "stateMachineId": "",
+                "quantumCircuitId": "",
+                "isOptional": false,
+                "isDerived": false,
+                "isId": false,
+                "isExternalId": false
+              },
+              "51ac0454-9b8e-43dd-acee-d226a390fba7": {
+                "id": "51ac0454-9b8e-43dd-acee-d226a390fba7",
+                "name": "signed",
+                "type": "ClassAttribute",
+                "owner": "285e9e19-ba7e-49f0-98cc-4ec219dc57c8",
+                "bounds": {
+                  "x": -4519.5,
+                  "y": -1914.5,
+                  "width": 159,
+                  "height": 30
+                },
+                "code": "",
+                "visibility": "public",
+                "attributeType": "str",
+                "implementationType": "none",
+                "stateMachineId": "",
+                "quantumCircuitId": "",
+                "isOptional": false,
+                "isDerived": false,
+                "isId": false,
+                "isExternalId": false
+              },
+              "6c9842a5-3edf-484a-8739-79ee8b60b038": {
+                "id": "6c9842a5-3edf-484a-8739-79ee8b60b038",
+                "name": "status",
+                "type": "ClassAttribute",
+                "owner": "class_qjstz2s9q_mtilcayx_3p2",
+                "bounds": {
+                  "x": -4898.944444444444,
+                  "y": -2002,
+                  "width": 219,
+                  "height": 25
+                },
+                "code": "",
+                "visibility": "public",
+                "attributeType": "ReportStatus",
+                "implementationType": "none",
+                "stateMachineId": "",
+                "quantumCircuitId": "",
+                "isOptional": false,
+                "isDerived": true,
+                "isId": false,
+                "isExternalId": false,
+                "defaultValue": "draft"
+              },
+              "0b24f37d-cb6f-4dda-933f-91fcd8b0aec5": {
+                "id": "0b24f37d-cb6f-4dda-933f-91fcd8b0aec5",
+                "name": "+ signReport(): bool",
+                "type": "ClassMethod",
+                "owner": "class_qjstz2s9q_mtilcayx_3p2",
+                "bounds": {
+                  "x": -4898.944444444444,
+                  "y": -1977,
+                  "width": 219,
+                  "height": 25
+                },
+                "code": "def signReport(self):\n    if self.status == ReportStatus.signed:\n        return False\n\n    if not self.conclusion or not self.sign:\n        return False\n\n    self.status = ReportStatus.signed\n    self.endDate = date.today()\n    return True\n",
+                "visibility": "public",
+                "attributeType": "str",
+                "implementationType": "code",
+                "stateMachineId": "",
+                "quantumCircuitId": "",
+                "isOptional": false,
+                "isDerived": false,
+                "isId": false,
+                "isExternalId": false
+              },
+              "bcb694d7-6f82-4e25-ae46-4bde66b9ee2c": {
+                "id": "bcb694d7-6f82-4e25-ae46-4bde66b9ee2c",
+                "name": "patientAge",
+                "type": "ClassAttribute",
+                "owner": "class_7njursmwf_mtilcayw_zv9",
+                "bounds": {
+                  "x": -5298.012446454182,
+                  "y": -1996.5,
+                  "width": 219,
+                  "height": 25
+                },
+                "code": "",
+                "visibility": "public",
+                "attributeType": "int",
+                "implementationType": "none",
+                "stateMachineId": "",
+                "quantumCircuitId": "",
+                "isOptional": false,
+                "isDerived": true,
+                "isId": false,
+                "isExternalId": false
+              },
+              "5197d320-0788-4639-b90f-c687fe095b5c": {
+                "id": "5197d320-0788-4639-b90f-c687fe095b5c",
+                "name": "numberOfFindings",
+                "type": "ClassAttribute",
+                "owner": "class_7njursmwf_mtilcayw_zv9",
+                "bounds": {
+                  "x": -5298.012446454182,
+                  "y": -1971.5,
+                  "width": 219,
+                  "height": 25
+                },
+                "code": "",
+                "visibility": "public",
+                "attributeType": "int",
+                "implementationType": "none",
+                "stateMachineId": "",
+                "quantumCircuitId": "",
+                "isOptional": false,
+                "isDerived": true,
+                "isId": false,
+                "isExternalId": false,
+                "defaultValue": "0"
+              },
+              "b31c526e-c00a-4acd-9528-023207a8237e": {
+                "id": "b31c526e-c00a-4acd-9528-023207a8237e",
+                "name": "+ calculatePatientAge(): int",
+                "type": "ClassMethod",
+                "owner": "class_7njursmwf_mtilcayw_zv9",
+                "bounds": {
+                  "x": -5298.012446454182,
+                  "y": -1946.5,
+                  "width": 219,
+                  "height": 25
+                },
+                "code": "def calculatePatientAge(self):\n    birth = self.patient.birthDate\n    had_birthday = (self.explorationDate.month, self.explorationDate.day) >= (birth.month, birth.day)\n    self.patientAge = self.explorationDate.year - birth.year - (0 if had_birthday else 1)\n    return self.patientAge\n",
+                "visibility": "public",
+                "attributeType": "str",
+                "implementationType": "code",
+                "stateMachineId": "",
+                "quantumCircuitId": "",
+                "isOptional": false,
+                "isDerived": false,
+                "isId": false,
+                "isExternalId": false
+              },
+              "0697498c-2ca9-4f8b-9678-d5964066b845": {
+                "id": "0697498c-2ca9-4f8b-9678-d5964066b845",
+                "name": "+ countFindings(): int",
+                "type": "ClassMethod",
+                "owner": "class_7njursmwf_mtilcayw_zv9",
+                "bounds": {
+                  "x": -5298.012446454182,
+                  "y": -1921.5,
+                  "width": 219,
+                  "height": 25
+                },
+                "code": "def countFindings(self):\n    self.numberOfFindings = len(self.findings)\n    return self.numberOfFindings\n",
+                "visibility": "public",
+                "attributeType": "str",
+                "implementationType": "code",
                 "stateMachineId": "",
                 "quantumCircuitId": "",
                 "isOptional": false,
@@ -2278,7 +2481,7 @@
             },
             "assessments": {}
           },
-          "lastUpdate": "2026-09-07T21:34:43.770Z",
+          "lastUpdate": "2026-11-20T10:00:00.000Z",
           "description": "Imported ClassDiagram diagram from image"
         }
       ]
