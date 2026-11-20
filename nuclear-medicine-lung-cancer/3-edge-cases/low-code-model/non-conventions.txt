@@ -1,0 +1,2 @@
+- The blood glucose of an exploration must always be greater than 200.
+- The service only accepts patients who are not smokers (a clinical antecedent can never record the patient as a smoker).
