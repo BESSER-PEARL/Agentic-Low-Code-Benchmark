@@ -15,12 +15,12 @@ On top of that structure, this variation adds validation and business rules expr
 | Context | Invariant | Rule |
 |---|---|---|
 | `Patient` | `ValidDni` | The DNI is exactly eight digits followed by one uppercase letter (`^[0-9]{8}[A-Z]$`). |
-| `Patient` | `ValidSex` | The sex is either `M` or `F`. |
+| `Patient` | `ValidGender` | The gender is either `M` or `F`. |
 | `Patient` | `BirthDateInThePast` | The birth date is earlier than today. |
-| `Exploration` | `BloodGlucoseBelowLimit` | The blood glucose is greater than 0 and lower than 200. |
+| `Exploration` | `BloodGlucoseInRange` | The blood glucose is greater than 0 and lower than 200. |
 | `Exploration` | `NonNegativeMediastinicQuantification` | The mediastinal quantification is never negative. |
 | `Staging` | `StagingNotBeforeExploration` | The `stagingDate` is not earlier than the `explorationDate` of its exploration. |
-| `Report` | `ReportNotBeforeExploration` | The report's `endDate` is not earlier than the `explorationDate` of its exploration. |
+| `Report` | `ReportNotBeforeExploration` | Once the report is signed, its `endDate` is not earlier than the explorationDate of its exploration. |
 
 The generated application must reject any create or update operation that violates one of these invariants.
 

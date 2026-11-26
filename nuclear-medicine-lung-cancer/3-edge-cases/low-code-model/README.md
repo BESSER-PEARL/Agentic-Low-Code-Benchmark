@@ -12,10 +12,10 @@ This model starts from the [second variation](../../2-validation-and-business-ru
 
 | Context | Invariant | Change with respect to variation 2 |
 |---|---|---|
-| `Exploration` | `BloodGlucoseAboveLimit` | **Replaces** `BloodGlucoseBelowLimit`: the blood glucose must now be **greater than 200**, the opposite of the conventional rule. |
+| `Exploration` | `BloodGlucoseAboveLimit` | **Replaces** `BloodGlucoseInRange`: the blood glucose must now be **greater than 200**, the opposite of the conventional rule. |
 | `ClinicalAntecedent` | `OnlyNonSmokers` | **New**: a clinical antecedent can never record the patient as a smoker (`self.smoker = false`), which is unusual for a lung cancer service. |
 
-The other invariants (`ValidDni`, `ValidSex`, `BirthDateInThePast`, `NonNegativeMediastinicQuantification`, `StagingNotBeforeExploration` and `ReportNotBeforeExploration`) are kept unchanged.
+The other invariants (`ValidDni`, `ValidGender`, `BirthDateInThePast`, `NonNegativeMediastinicQuantification`, `StagingNotBeforeExploration` and `ReportNotBeforeExploration`) are kept unchanged.
 
 ## Opening the Project
 
